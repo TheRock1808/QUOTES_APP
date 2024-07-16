@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const quotesCollection = require('../models/mongo.js');
 
-
+//1
 router.get('/', async (req, res) => {     //quotes get
   const { quote, author } = req.query;
     try {
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {     //quotes get
     }
   });
 
-
+//2
 router.post('/', async (req, res) => {     //quotes post
     const { quote, author, tags } = req.body; 
     // console.log(quote)
@@ -38,6 +38,7 @@ router.post('/', async (req, res) => {     //quotes post
     }
 });
 
+//3
 router.patch('/:id', async (req, res) => {     //quotes/{id}
   const { id } = req.params;
   const { quote, author, tags } = req.body; 
@@ -51,6 +52,7 @@ router.patch('/:id', async (req, res) => {     //quotes/{id}
   }
 });
 
+//4
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -70,7 +72,21 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+//6
+router.get('/tags', async (req, res) => {
+  try {
+    const quotes = await quotesCollection.find();
+    const tags = quotes
+      .map(quote => quote.tags.split(';'))
+      .flat()
+      .filter((tag, index, self) => self.indexOf(tag) === index); // Unique tags
+    res.json(tags);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
+//5
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -84,11 +100,5 @@ router.get('/:id', async (req, res) => {
 
 
 
-
-
-
-
-
-    
 
 module.exports = router;
