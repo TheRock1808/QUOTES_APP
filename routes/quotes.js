@@ -38,6 +38,21 @@ router.post('/', async (req, res) => {     //quotes post
     }
 });
 
+router.patch('/:id', async (req, res) => {     //quotes/{id}
+  const { id } = req.params;
+  const { quote, author, tags } = req.body; 
+
+  try {
+    const updatedQuote = await quotesCollection.findByIdAndUpdate(id,{ quote, author, tags },{ new: true });
+    if (!updatedQuote) return res.status(404).json({ message: 'Quote not found' });
+    res.json(updatedQuote);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
 
 
 
