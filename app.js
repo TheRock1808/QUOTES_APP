@@ -32,6 +32,10 @@ app.get('/signIn', (req, res) =>{
     res.render('auth/signIn');
 })
 
+// app.get('/quote', (req, res) =>{
+//     res.render('auth/quote');
+// })
+
 app.use('/auth', auth);
 
 app.listen(port, () => {
