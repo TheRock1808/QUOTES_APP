@@ -3,6 +3,7 @@ const  ejs = require('ejs');
 const path = require('path')
 const mongoose = require('mongoose');
 const users = require('./models/mongo.js');
+const quotesCollection = require('./models/mongo.js');
 
 const app = express();
 const port = 3000;
@@ -18,6 +19,9 @@ app.use(express.json());
 app.get('/', (req, res) =>{
     res.render('index');
 })
+
+const quotesRouter = require('./routes/quotes.js');
+app.use('/quotes', quotesRouter);
 
 app.get('/signUp', (req, res) =>{
     res.render('auth/signUp');
