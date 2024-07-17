@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid')
 
-mongoose.connect("mongodb://localhost:27017/quotesapp",{
+mongoose.connect("mongodb://127.0.0.1:27017/quotesapp",{
     serverSelectionTimeoutMS: 30000
 }).then(() =>{
     console.log("CONNECTED TO DATABASE");
