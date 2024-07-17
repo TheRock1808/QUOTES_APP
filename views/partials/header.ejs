@@ -18,14 +18,17 @@
       <div class="flex space-x-2 items-center px-5 ">
         <a class="px-3 py-2 font-bold text-black">Quotes</a>
         
-        <button class="bg-slate-200 px-2 rounded-xl py-1">
-          Signup / login
+        <button class="bg-slate-200 px-2 rounded-xl py-1" hx-get="/SignUp" hx-target="#body" hx-swap="innerHtml">
+          Signup
+        </button>
+        <button class="bg-slate-200 px-2 rounded-xl py-1" hx-get="/SignIn" hx-target="#body" hx-swap="innerHtml">
+          Login
         </button>
       </div>
     </div>
   </nav>
 
-  <div class="flex justify-center items-center min-h-screen">
+  <!-- <div class="flex justify-center items-center min-h-screen">
     <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-[400px]">
       <div class="bg-[#896ab9] text-white py-3 px-3 text-xl rounded-t-md">
         Sign up
@@ -64,5 +67,5 @@
         </button>
       </div>
     </div>
-  </div>
+  </div> -->
 </body>
