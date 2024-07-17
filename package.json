@@ -6,6 +6,8 @@
     "express-session": "^1.18.0",
     "mongoose": "^8.5.1",
     "nodemon": "^3.1.4",
+    "postcss": "^8.4.39",
+    "postcss-cli": "^11.0.0",
     "uuid": "^10.0.0"
   }
 }
