@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.0/dist/htmx.js"></script>
+    <link rel="stylesheet" href="style/home.css" />
+    <title>SignUp</title>
+    <style>
+      .error {
+        padding: 10px; /* Add padding around the text */
+        margin-bottom: 10px; /* Add space between error messages */
+        color: #721c24; /* Text color (dark red) */
+        background-color: #f8d7da; /* Background color (light red) */
+        border: 1px solid #f5c6cb; /* Border color (lighter red) */
+        border-radius: 4px; /* Rounded corners */
+      }
+    </style>
+</head>
+<body >
+    <nav class="bg-[#9fba29]">
+      <div class="flex items-center justify-between mx-auto max-w-screen-full">
+        <div class="text-white text-3xl font-bold px-3 py-3">
+          Software Quotes
+        </div>
+        <div class="flex space-x-2 items-center px-5 ">
+          <a href="/" class="px-3 py-2 font-bold">Quotes</a>
+          
+          <button class="bg-slate-200 px-2 rounded-xl py-1">
+            Signup / login
+          </button>
+        </div>
+      </div>
+    </nav>
+  
+    <div class="flex justify-center items-center min-h-screen">
+      <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-[400px]">
+        <div class="bg-[#896ab9] text-white py-3 px-3 text-xl rounded-t-md">
+         Login
+        </div>
+        <div class="py-2 px-4">
+          E-Mail
+          <input
+            class="px-2 py-2 w-full border-2 border-slate-200 rounded-xl"
+            type="text"
+            placeholder="Email"
+          />
+        </div>
+        <div class="py-2 px-4">
+          Password
+          <input
+            class="px-2 py-2 w-full border-2 border-slate-200 rounded-xl"
+            type="password"
+            placeholder="Password"
+          />
+        </div>
+  
+        <div class="flex justify-center px-4 py-5">
+          <button class="bg-[#b29ed1] px-2 py-1 mx-4 rounded-lg text-white">
+            Login
+          </button>
+          <button class="bg-[#d29f3b] px-2 py-1 mx-4 rounded-lg text-white">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
