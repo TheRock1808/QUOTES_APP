@@ -28,6 +28,10 @@ app.get('/signUp', (req, res) =>{
     res.render('auth/signUp');
 })
 
+app.get('/signIn', (req, res) =>{
+    res.render('auth/signIn');
+})
+
 app.use('/auth', auth);
 
 app.listen(port, () => {
