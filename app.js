@@ -30,25 +30,6 @@ app.get('/signUp', (req, res) =>{
 
 app.use('/auth', auth);
 
-// app.post('/signupform', async(req, res) =>{
-//     try {
-//     const {fname, lname, email, password} = req.body;
-//     const data = { 
-//         fname,
-//         lname,
-//         email,
-//         password
-//     };
-//     await users.insertMany([data]);
-//     console.log('successful');
-//     req.redirect('/');
-// }
-// catch (error) {
-//     console.error('Error inserting data:', error);
-//     res.status(500).send({ message: 'Internal Server Error' });
-// }
-// })
-
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
 });

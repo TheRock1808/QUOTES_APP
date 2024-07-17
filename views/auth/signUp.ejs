@@ -1,22 +1,36 @@
 <div class="flex justify-center items-center min-h-screen">
+  <form id="SignUp" action="/auth/signup" method="post">
     <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-[400px]">
       <div class="bg-[#896ab9] text-white py-3 px-3 text-xl rounded-t-md">
         Sign up
       </div>
-      <div class="py-3 px-3">
-        User name
-        <input
-          class="px-2 py-2 w-full border-2 border-slate-200 rounded-xl"
-          type="text"
-          placeholder="User name"
-        />
+      <div class="flex">
+        <div class="py-3 px-3">
+          First name
+          <input
+            class="px-2 py-2 w-full border-2 border-slate-200 rounded-xl"
+            type="text"
+            placeholder="First name"
+            name="fname"
+          />
+        </div>
+        <div class="py-3 px-3">
+          Last name
+          <input
+            class="px-2 py-2 w-full border-2 border-slate-200 rounded-xl"
+            type="text"
+            placeholder="Second name"
+            name="lname"
+          />
+        </div>
       </div>
       <div class="py-2 px-4">
         E-Mail
         <input
           class="px-2 py-2 w-full border-2 border-slate-200 rounded-xl"
-          type="text"
+          type="email"
           placeholder="Email"
+          name="email"
         />
       </div>
       <div class="py-2 px-4">
@@ -25,16 +39,24 @@
           class="px-2 py-2 w-full border-2 border-slate-200 rounded-xl"
           type="password"
           placeholder="Password"
+          name="password"
         />
       </div>
 
       <div class="flex justify-center px-4 py-5">
-        <button class="bg-[#b29ed1] px-2 py-1 mx-4 rounded-lg text-white">
+        <button
+          class="bg-[#b29ed1] px-2 py-1 mx-4 rounded-lg text-white"
+          value="signUp"
+        >
           Sign up
         </button>
-        <button class="bg-[#d29f3b] px-2 py-1 mx-4 rounded-lg text-white">
+        <button
+          class="bg-[#d29f3b] px-2 py-1 mx-4 rounded-lg text-white"
+          value="cancel"
+        >
           Cancel
         </button>
       </div>
     </div>
-  </div>
+  </form>
+</div>
