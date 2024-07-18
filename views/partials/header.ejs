@@ -12,7 +12,7 @@
     />
     <script src="https://unpkg.com/htmx.org@2.0.0/dist/htmx.js"></script>
     <style>
-      body{
+      body {
         overflow: hidden;
       }
     </style>
@@ -34,7 +34,14 @@
           Software Quotes
         </div>
         <div class="flex space-x-2 items-center px-5">
-          <button hx-get="/quote" hx-target="#body" hx-swap="innerHtml" class="px-3 py-2 font-bold text-black">Quotes</button>
+          <button
+            hx-get="/quote"
+            hx-target="#body"
+            hx-swap="innerHtml"
+            class="px-3 py-2 font-bold text-black"
+          >
+            Quotes
+          </button>
 
           <button
             class="bg-slate-200 px-2 rounded-xl py-1"
