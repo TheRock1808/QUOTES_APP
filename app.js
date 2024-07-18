@@ -38,7 +38,12 @@ app.get('/signIn', (req, res) =>{
     res.render('auth/signIn');
 })
 
+app.get('/quote', (req, res) =>{
+    res.render('./quote');
+})
+
 app.use('/auth', auth);
+
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
