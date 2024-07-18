@@ -17,7 +17,7 @@ const quotesRouter = require('./routes/quotes.js');
 app.use('/quotes', quotesRouter);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.render("index")
 })
 
 
