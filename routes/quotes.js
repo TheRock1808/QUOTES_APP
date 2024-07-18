@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const quotesCollection = require('../models/mongo.js');
-const quotesreactions = require('../models/quotesreactions.js');
-
+const quotesreaction = require('../models/quotesreaction.js');
+const { v4: uuidv4 } = require('uuid');
 //1
 router.get('/', async (req, res) => {     //quotes get
   const { quote, author } = req.query;
@@ -99,14 +99,103 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
 //part 3
-router.patch('/:id/like/up', async (req, res) => {
-  try {
-    const reaction = await quotesreactions.findByIdAndUpdate(req.params.id, { like: true, dislikes:false}, { new: true });
+// 3.1
+router.patch('/:id/like/up',async (req, res) => {
+
+    try{
+      const { id } = req.params;
+      // console.log(`like the quote id ${id}`)
+    const sessionuserId = req.session.user._id;
+    // console.log(sessionuserId)
+    let reaction = await quotesreaction.findOne({ quoteId: id, userId : sessionuserId});
+    if (!reaction) {
+      // Create a new reaction if it doesn't exist
+      reaction = new quotesreaction({
+        _id: uuidv4(),
+        like: true,
+        dislike: false,
+        quoteId: id,
+        userId: sessionuserId,  
+      });
+    } else {
+      // Update existing reaction
+      reaction.like = true;
+      reaction.dislike = false;
+    }
+
+    // Save or update the reaction in MongoDB
+    await reaction.save();
+    console.log(reaction)
     res.status(200).json(reaction);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+
+});
+
+// 3.2
+router.patch('/:id/dislike/up', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sessionuserId = req.session.user._id;
+
+    let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
+    if (!reaction) {
+      reaction = new quotesreaction({
+        _id: uuidv4(),
+        like: false,
+        dislike: true,
+        quoteId: id,
+        userId: sessionuserId,
+      });
+    } else {
+      reaction.like = false;
+      reaction.dislike = true;
+    }
+
+    await reaction.save();
+    res.status(200).json(reaction);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//3.3
+router.patch('/:id/like/down', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sessionuserId = req.session.user._id;
+
+    let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
+    if (reaction) {
+      reaction.like = false;
+      await reaction.save();
+      res.status(200).json(reaction);
+    } else {
+      res.status(404).json({ message: 'Reaction not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+//3.4
+router.patch('/:id/dislike/down', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sessionuserId = req.session.user._id;
+
+    let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
+    if (reaction) {
+      reaction.dislike = false;
+      await reaction.save();
+      res.status(200).json(reaction);
+    } else {
+      res.status(404).json({ message: 'Reaction not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 

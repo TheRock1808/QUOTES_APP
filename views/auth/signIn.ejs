@@ -1,0 +1,42 @@
+<%- include('../partials/header') %>
+<div class="flex justify-center items-center min-h-screen">
+  <form id="SignIn" action="/auth/signIn" method="post">
+    <div class="bg-white ring-1 w-[400px] ring-slate-400 shadow-xl rounded-md  ">
+      <div class="bg-[#896ab9] text-white py-3 px-3 text-xl rounded-t-md">
+        Login
+      </div>
+      <div class="py-2 px-4">
+        E-Mail
+        <input
+          class="px-2 py-1 w-full border-2 border-slate-200 rounded-xl"
+          type="email"
+          placeholder="Email"
+          name="email"
+        />
+      </div>
+      <div class="py-2 px-4">
+        Password
+        <input
+          class="px-2 py-1 w-full border-2 border-slate-200 rounded-xl"
+          type="password"
+          placeholder="Password"
+          name="password"
+        />
+      </div>
+      <div class="flex justify-center px-4 py-3">
+        <button
+          class="bg-[#b29ed1] px-2 py-2 mx-4 rounded-lg text-white justify-end"
+          value="signUp"
+        >
+          Login
+        </button>
+        <button
+          class="bg-[#d29f3b] px-2 py-2 mx-4 rounded-lg text-white"
+          value="cancel"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
