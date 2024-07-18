@@ -3,7 +3,6 @@ const router = express.Router();
 const quotesCollection = require('../models/mongo.js');
 const quotesreaction = require('../models/quotesreaction.js');
 const { v4: uuidv4 } = require('uuid');
-const { isAuthenticated } = require('./authMiddleware.js');
 //1
 router.get('/', async (req, res) => {     //quotes get
   const { quote, author } = req.query;
@@ -107,7 +106,7 @@ router.patch('/:id/like/up',async (req, res) => {
     try{
       const { id } = req.params;
       // console.log(`like the quote id ${id}`)
-    const sessionuserId = req.session.userId;
+    const sessionuserId = req.session.user._id;
     // console.log(sessionuserId)
     let reaction = await quotesreaction.findOne({ quoteId: id, userId : sessionuserId});
     if (!reaction) {
@@ -136,10 +135,10 @@ router.patch('/:id/like/up',async (req, res) => {
 });
 
 // 3.2
-router.patch('/:id/dislike/up', isAuthenticated, async (req, res) => {
+router.patch('/:id/dislike/up', async (req, res) => {
   try {
     const { id } = req.params;
-    const sessionuserId = req.session.userId;
+    const sessionuserId = req.session.user._id;
 
     let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
     if (!reaction) {
@@ -163,10 +162,10 @@ router.patch('/:id/dislike/up', isAuthenticated, async (req, res) => {
 });
 
 //3.3
-router.patch('/:id/like/down', isAuthenticated, async (req, res) => {
+router.patch('/:id/like/down', async (req, res) => {
   try {
     const { id } = req.params;
-    const sessionuserId = req.session.userId;
+    const sessionuserId = req.session.user._id;
 
     let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
     if (reaction) {
@@ -182,10 +181,10 @@ router.patch('/:id/like/down', isAuthenticated, async (req, res) => {
 });
 
 //3.4
-router.patch('/:id/dislike/down', isAuthenticated, async (req, res) => {
+router.patch('/:id/dislike/down', async (req, res) => {
   try {
     const { id } = req.params;
-    const sessionuserId = req.session.userId;
+    const sessionuserId = req.session.user._id;
 
     let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
     if (reaction) {

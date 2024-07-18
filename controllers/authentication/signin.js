@@ -11,7 +11,7 @@ async function handleUserSignin(req, res) {
 
             if (user && await bcrypt.compare(password, user.password)) {
                 req.session.user = user;
-                console.log('User found', req,session.user);
+                console.log('User found', req.session.user);
                 res.redirect('/dashboard');
             } else {
                 console.log('User not found');
