@@ -14,7 +14,6 @@ async function handleUserSignin(req, res) {
             req.session.userId = user._id;
             req.session.userEmail = user.email;
             req.session.userName = user.fname+" "+user.lname;
-
             res.redirect('/quote');
         } else {
             console.log('user not found');

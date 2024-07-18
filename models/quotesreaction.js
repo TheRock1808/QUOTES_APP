@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid')
+const mongoose = require('mongoose');
 const userQuoteReactionSchema = new mongoose.Schema({
-    id: { 
+    _id: { 
       type: String, 
       default: uuidv4 
     },

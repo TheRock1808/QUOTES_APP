@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const user = require('../../models/mongo');
-const express = require('express');
 const bcrypt = require('bcrypt');
-
 async function handleUserSignup(req, res) {
     try {
         const { fname, lname, email, password } = req.body;
