@@ -1,0 +1,36 @@
+<nav className="bg-[#9fba29]">
+  <div className="flex items-center justify-between mx-auto max-w-screen-full">
+    <div className="px-3 py-3 flex space-x-2">
+      <div className="text-white text-3xl font-bold pr-3">
+        Software Quotes
+      </div>
+      <div className="flex space-x-4">
+        <button className="p-3 focus:bg-slate-200 px-2 rounded-xl py-1">
+          Authors
+        </button>
+        <button className="p-3 focus:bg-slate-200 px-2 rounded-xl py-1">
+          Home
+        </button>
+        <button className="p-3 focus:bg-slate-200 px-2 rounded-xl py-1">
+          Quotes
+        </button>
+        <button className="p-3 focus:bg-slate-200 px-2 rounded-xl py-1">
+          My Quote
+        </button>
+      </div>
+    </div>
+    <div className="flex space-x-2 items-center px-5 ">
+      {/* This should have initial of the user and when clicked show logout button in drop down */}
+      <button className="relative inline-flex items-end justify-center w-10 h-10 overflow-hidden bg-slate-200 rounded-full text-black ">
+        <span className="pb-2">KN</span>
+        {/* drop down menu */}
+        <div
+          id="userDropdown"
+          className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+        >
+          <a className="">Logout</a>
+        </div>
+      </button>
+    </div>
+  </div>
+</nav>
