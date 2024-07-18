@@ -1,25 +1,22 @@
 const express = require('express');
-const session = require('express-session');
-const  ejs = require('ejs');
-const path = require('path')
+const ejs = require('ejs');
+const path = require('path');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo'); // To store sessions in MongoDB
 const users = require('./models/mongo.js');
 const quotesCollection = require('./models/mongo.js');
-const { isAuthenticated } = require('./routes/authMiddleware.js');
-
 const app = express();
 const port = 3000;
-
-app.use(session({
-    secret: 'quotesapp', // Replace with a strong secret key
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set secure to true if you're using HTTPS
-}));
+// app.use(session({
+//     secret: 'quotesapp', // Replace with a strong secret key
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false } // Set secure to true if you're using HTTPS
+// }));
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, "views"));
-// app.use(bodyParser.json());
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.json());
@@ -28,45 +25,58 @@ app.use(express.json());
 
 
 
-//routes
+app.use(session({
+    secret: 'Thor2024@cc',
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/quotesapp' }),
+    cookie: { secure: false } // Change to true if using HTTPS
+}));
+
+// Middleware to check if the user is logged in
+const sessionChecker = (req, res, next) => {
+    if (req.session.user) {
+        res.redirect('/dashboard');
+    } else {
+        next();
+    }
+};
+
+// Routes
 const auth = require('./routes/auth');
+const quotesRouter = require('./routes/quotes');
+
+app.get('/', (req, res) => {
+    if (req.session.user) {
+        res.redirect('/dashboard');
+    } else {
+        res.render('index');
+    }
+});
+
 app.use('/auth', auth);
-const quotesRouter = require('./routes/quotes.js');
 app.use('/quotes', quotesRouter);
 
-app.get('/', (req, res) =>{
-    res.render('index');
-})
-
-
-//SignUp process
-app.get('/signUp', (req, res) =>{
+app.get('/signUp', sessionChecker, (req, res) => {
     res.render('auth/signUp');
-})
-
-app.get('/cancel', (req, res) =>{
-    res.render('index');
-})
-
-// SignIn process
-app.get('/signIn', (req, res) =>{
-    res.render('auth/signIn');
-})
-
-
-
-
-app.get('/quote', (req, res) =>{
-    res.render('afterlogin');
-})
-app.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).send({ message: 'Failed to logout' });
-        }
-        res.redirect('/');
-    });
 });
+
+app.get('/signIn', sessionChecker, (req, res) => {
+    res.render('auth/signIn');
+});
+
+app.get('/cancel', (req, res) => {
+    res.render('index');
+});
+
+app.get('/dashboard', (req, res) => {
+    if (req.session.user) {
+        res.render('dashboard', { user: req.session.user });
+    } else {
+        res.redirect('/signIn');
+    }
+});
+
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);

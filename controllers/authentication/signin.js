@@ -1,31 +1,28 @@
-const mongoose = require('mongoose');
 const users = require('../../models/mongo');
-const express = require('express');
 const bcrypt = require('bcrypt');
 
 async function handleUserSignin(req, res) {
-    try {
-        const { email, password } = req.body;
-        const user = await users.findOne({ email });
-        if (user && await bcrypt.compare(password, user.password)) {
-            console.log('user found');
+    if (req.session.user) {
+        res.redirect('/dashboard');
+    } else {
+        try {
+            const { email, password } = req.body;
+            const user = await users.findOne({ email });
 
-            // Create a session for the user
-            req.session.userId = user._id;
-            req.session.userEmail = user.email;
-            req.session.userName = user.fname+" "+user.lname;
-            res.redirect('/quote');
-        } else {
-            console.log('user not found');
-            res.render('auth/signIn', {
-                error: ("Invalid email or password, please check it"),
-            });
+            if (user && await bcrypt.compare(password, user.password)) {
+                req.session.user = user;
+                console.log('User found', req,session.user);
+                res.redirect('/dashboard');
+            } else {
+                console.log('User not found');
+                res.render('auth/signIn', {
+                    error: 'Invalid email or password, please check it'
+                });
+            }
+        } catch (error) {
+            console.log('Error occurred:', error);
+            res.status(500).send({ message: 'Internal Server Error' });
         }
-    } catch (error) {
-        console.log('error occurred', error);
-        res.render('auth/signIn', {
-            error: ("An error occurred, please try again later"),
-        });
     }
 }
 
