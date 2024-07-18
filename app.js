@@ -24,10 +24,16 @@ app.get('/', (req, res) =>{
 const quotesRouter = require('./routes/quotes.js');
 app.use('/quotes', quotesRouter);
 
+//SignUp process
 app.get('/signUp', (req, res) =>{
     res.render('auth/signUp');
 })
 
+app.get('/cancel', (req, res) =>{
+    res.render('index');
+})
+
+// SignIn process
 app.get('/signIn', (req, res) =>{
     res.render('auth/signIn');
 })
