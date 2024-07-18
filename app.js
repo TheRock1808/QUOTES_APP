@@ -77,6 +77,10 @@ app.get('/dashboard', (req, res) => {
     }
 });
 
+app.get('/home', (req, res) => {
+    res.render('home');
+});
+
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
