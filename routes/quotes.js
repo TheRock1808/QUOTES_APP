@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const quotesCollection = require('../models/mongo.js');
+const quotesreactions = require('../models/quotesreactions.js');
 
 //1
 router.get('/', async (req, res) => {     //quotes get
@@ -99,6 +100,14 @@ router.get('/:id', async (req, res) => {
 });
 
 
-
+//part 3
+router.patch('/:id/like/up', async (req, res) => {
+  try {
+    const reaction = await quotesreactions.findByIdAndUpdate(req.params.id, { like: true, dislikes:false}, { new: true });
+    res.status(200).json(reaction);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;
