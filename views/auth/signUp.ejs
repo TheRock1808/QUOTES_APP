@@ -53,9 +53,11 @@
         <button
           class="bg-[#d29f3b] px-2 py-1 mx-4 rounded-lg text-white"
           value="cancel"
+          hx-get="/cancel" hx-target="#body" hx-swap="outerHtml"  
         >
           Cancel
         </button>
+        <!--one the click of cancel it should render quotes-->
       </div>
     </div>
   </form>
