@@ -85,7 +85,7 @@ app.get('/dashboard',async (req, res) => {
     const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
     const quotes = response1.data;
     if (req.session.user) {
-        res.render('dashboard', { user: req.session.user , quotes:quotes, currentPath: '/quotes'});
+        res.render('dashboard', { user: req.session.user , quotes:quotes});
     } else {
         res.redirect('/signIn');
     }
@@ -96,6 +96,16 @@ app.get('/addquote',async (req, res) => {
 
 app.get('/home', (req, res) => {
     res.render('home');
+});
+
+app.get('/allquote', async(req, res) => {
+    const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
+    const quotes = response1.data;
+    if (req.session.user) {
+        res.render('allquote', { user: req.session.user , quotes:quotes});
+    } else {
+        res.redirect('/signIn');
+    }
 });
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);

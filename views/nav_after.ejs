@@ -3,48 +3,99 @@
     <div class="px-3 py-3 flex space-x-2">
       <div class="text-white text-3xl font-bold pr-3">Software Quotes</div>
       <div class="flex space-x-4">
-        <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 <%= currentPath === '/authors' ? 'bg-slate-200 text-black' : '' %>">
-          <a href="/authors">Authors</a>
+        <button
+          class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 "
+          hx-get="/home"
+          hx-target="#body"
+          hx-swap="innerHTML"
+          
+        >
+          Home
         </button>
-        <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 <%= currentPath === '/' ? 'bg-slate-200 text-black' : '' %>">
-          <a href="/">Home</a>
+        <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 "
+        hx-get="/author"
+          hx-target="#body"
+          hx-swap="innerHTML">
+          Authors
         </button>
-        <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 <%= currentPath === '/quotes' ? 'bg-slate-200 text-black' : '' %>">
-          <a href="/dashboard">Quotes</a>
+       
+        <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 " 
+        hx-get="/allquote"
+          hx-target="#body"
+          hx-swap="innerHTML">
+          Quotes
         </button>
-        <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 <%= currentPath === '/myquote' ? 'bg-slate-200 text-black' : '' %>">
-          <a href="/myquote">My Quote</a>
+        <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 "
+        hx-get="/myquote"
+          hx-target="#body"
+          hx-swap="innerHTML">
+          My Quote
         </button>
       </div>
     </div>
-    <div class="flex space-x-2 items-center px-5 relative">
-      
-      <span>
-        <%= user.fname %> <%= user.lname %>
-      </span>
-      <button id="userMenuButton" class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-slate-200 rounded-full text-black focus:outline-none">
-        <%= user.fname ? user.fname[0].toUpperCase() : '' %><%= user.lname ? user.lname[0].toUpperCase() : '' %>
-    </button>
-      <!-- Dropdown menu -->
-      <div id="userDropdown" class="absolute right-0 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-lg shadow-lg hidden z-20">
-        <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
-      </div>
+    <div class="flex items-center px-5">
+      <!-- This should have initial of the user and when clicked show logout button in drop down -->
+      <button
+        id="userButton"
+        class="relative flex w-12 h-12 overflow-hidden rounded-full text-black bg-slate-200 focus:ring-2 focus:ring-slate-500 "
+      >
+        <div class="inline-block items-center space-x-6 pt-2.5 pl-3">
+          <span class="uppercase font-bold text-lg"><%= user.initials %></span>
+        </div>
+      </button>
     </div>
+   
   </div>
 </nav>
-<script>
-  document.getElementById('userMenuButton').addEventListener('click', function() {
-    const dropdown = document.getElementById('userDropdown');
-    dropdown.classList.toggle('hidden');
-  });
 
-  // Close dropdown if clicked outside
-  document.addEventListener('click', function(event) {
-    const dropdown = document.getElementById('userDropdown');
-    const button = document.getElementById('userMenuButton');
-    
-    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-      dropdown.classList.add('hidden');
+<!-- drop down menu -->
+<div
+  id="userDropdown"
+  class="hidden absolute z-10 bg-slate-200 divide-y divide-gray-100 rounded-lg shadow w-36 mt-5"
+  style="right: 40px; top: 14px;"
+>
+  <div class="p-2 text-center">
+    <div class="text-lg font-bold uppercase"><%= user.initials %></div>
+
+  </div>
+  <ul>
+    <li>
+      <button
+        hx-get="/update"
+        hx-target="#display"
+        hx-swap="innerHTML"
+        class="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-colors duration-500 ease-in-out w-full text-left"
+      >
+        Update
+      </button>
+    </li>
+    <li>
+      <a
+        href="/auth/logout"
+        class="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-colors duration-500 ease-in-out w-full text-left"
+      >
+        Logout
+      </a>
+    </li>
+  </ul>
+</div>
+
+<script>
+  // Toggle dropdown menu
+  document
+    .getElementById("userButton")
+    .addEventListener("click", function (event) {
+      event.stopPropagation(); // Prevent click event from bubbling up
+      var dropdown = document.getElementById("userDropdown");
+      dropdown.classList.toggle("hidden");
+    });
+
+  // Close dropdown menu if clicked outside
+  window.addEventListener("click", function (e) {
+    var button = document.getElementById("userButton");
+    var dropdown = document.getElementById("userDropdown");
+    if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.add("hidden");
     }
   });
 </script>
