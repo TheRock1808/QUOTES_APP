@@ -22,7 +22,10 @@ async function handleUserSignup(req, res) {
             };
 
             const newUser = await users.create(data);
-            req.session.user = newUser;
+            req.session.user = {
+                id: newUser._id,
+                initials: `${newUser.fname.charAt(0).toUpperCase()}${newUser.lname.charAt(0).toUpperCase()}`,
+            };
             console.log('Signup successful', req.session.user);
             res.redirect('/dashboard');
         } catch (error) {

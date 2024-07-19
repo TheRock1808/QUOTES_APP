@@ -1,5 +1,6 @@
 const users = require('../../models/mongo');
 const bcrypt = require('bcrypt');
+const session = require('express-session')
 
 async function handleUserSignin(req, res) {
     if (req.session.user) {
@@ -10,7 +11,10 @@ async function handleUserSignin(req, res) {
             const user = await users.findOne({ email });
 
             if (user && await bcrypt.compare(password, user.password)) {
-                req.session.user = user;
+                req.session.user = {
+                    id: user._id,
+                    initials: `${user.fname.charAt(0).toUpperCase()}${user.lname.charAt(0).toUpperCase()}`,
+                };
                 console.log('User found', req,session.user);
                 res.redirect('/dashboard');
             } else {
