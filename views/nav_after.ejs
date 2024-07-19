@@ -6,7 +6,7 @@
         <button
           class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1"
           hx-get="/home"
-          hx-target="#body"
+          hx-target="#display"
           hx-swap="innerHTML"
         >
           Home
@@ -22,28 +22,14 @@
         </button>
       </div>
     </div>
-    <div class="flex space-x-2 items-center px-5">
+    <div class="flex items-center px-5">
       <!-- This should have initial of the user and when clicked show logout button in drop down -->
       <button
         id="userButton"
-        class="relative flex w-12 h-12 overflow-hidden rounded-full text-black"
+        class="relative flex w-12 h-12 overflow-hidden rounded-full text-black bg-slate-200 focus:ring-2 focus:ring-slate-500 "
       >
-        <div class="inline-block items-center space-x-4">
+        <div class="inline-block items-center space-x-6 pt-2.5 pl-3">
           <span class="uppercase font-bold text-lg"><%= user.initials %></span>
-          <svg
-            class="w-4 h-4 text-gray-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 9l-7 7-7-7"
-            ></path>
-          </svg>
         </div>
       </button>
     </div>
@@ -53,30 +39,33 @@
 <!-- drop down menu -->
 <div
   id="userDropdown"
-  class="hidden absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 mt-10"
-  style="right: 20px; top: 70px"
+  class="hidden absolute z-10 bg-slate-200 divide-y divide-gray-100 rounded-lg shadow w-36 mt-5"
+  style="right: 40px; top: 14px;"
 >
   <div class="p-2 text-center">
     <div class="text-lg font-bold uppercase"><%= user.initials %></div>
+
   </div>
-  <div>
-    <button
-      hx-get="/update"
-      hx-target="#display"
-      hx-swap="innerHTML"
-      class="block px-4 py-2 text-sm font-semibold text-gray-700 bg-white dark:bg-gray-800 rounded-md shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-500 ease-in-out border border-gray-200 dark:border-gray-700 w-full text-left"
-    >
-      Update
-    </button>
-  </div>
-  <div>
-    <a
-      href="/auth/logout"
-      class="block px-4 py-2 text-sm font-semibold text-gray-700 bg-white dark:bg-gray-800 rounded-md shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-500 ease-in-out border border-gray-200 dark:border-gray-700 w-full text-left"
-    >
-      Logout
-    </a>
-  </div>
+  <ul>
+    <li>
+      <button
+        hx-get="/update"
+        hx-target="#display"
+        hx-swap="innerHTML"
+        class="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-colors duration-500 ease-in-out w-full text-left"
+      >
+        Update
+      </button>
+    </li>
+    <li>
+      <a
+        href="/auth/logout"
+        class="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-colors duration-500 ease-in-out w-full text-left"
+      >
+        Logout
+      </a>
+    </li>
+  </ul>
 </div>
 
 <script>
