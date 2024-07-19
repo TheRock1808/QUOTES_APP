@@ -72,6 +72,15 @@ app.get('/cancel', (req, res) => {
     res.render('index');
 });
 
+app.get('/update', (req, res) => {
+    res.render('updateContent')
+});
+
+// app.get('/quotes', (req, res) => {
+//     // Fetch quotes and render them
+//     res.render('quote');
+// });
+
 app.get('/dashboard',async (req, res) => {
     const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
     const quotes = response1.data;
@@ -85,6 +94,9 @@ app.get('/addquote',async (req, res) => {
     res.render("addQuote")
 });
 
+app.get('/home', (req, res) => {
+    res.render('home');
+});
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
 });
