@@ -1,29 +1,20 @@
-<%- include('partials/header')  %>
-<h1 class="text-2xl font-bold mb-2">Quotes</h1>
-<div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-full p-4">
-  <div class="border-2 border-yellow-600 mb-10 rounded-md p-2 relative">
-    <p class="mb-6">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, libero
-      odit incidunt quos quod dignissimos atque voluptatem mollitia ullam at
-      vitae illo modi, ad repellendus, vero aperiam fugit quidem. Blanditiis.
-    </p>
-    <div
-      class="absolute bottom-2 right-10 bg-blue-600 h-fit w-fit rounded-md text-white p-1"
-    >
-      -author
-    </div>
+<!-- views/quotes.ejs -->
+<div id="body" class="container mx-auto p-4 h-screen overflow-y-auto mb-60">
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">Quotes</h1>
+    <% if (user) { %>
+      <a href="#" hx-get="/addquote" hx-target="#body" class="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700">
+        Add Quote
+      </a>
+    <% } %>
   </div>
-  <div class="border-2 border-yellow-600 mb-10 rounded-md p-2 relative">
-    <p class="mb-6">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, libero
-      odit incidunt quos quod dignissimos atque voluptatem mollitia ullam at
-      vitae illo modi, ad repellendus, vero aperiam fugit quidem. Blanditiis.
-    </p>
-    <div
-      class="absolute bottom-2 right-10 bg-blue-600 h-fit w-fit rounded-md text-white p-1"
-    >
-      -author
-    </div>
+  
+  <div id="quote-form-container"></div>
+
+  <!-- Quotes Section -->
+  <div id="quotes-section" class="space-y-4">
+    <% quotes.forEach(quote => { %>
+      <%- include('partials/quote', { quote }) %>
+    <% }); %>
   </div>
 </div>
-<%- include('partials/footer')  %>
