@@ -4,15 +4,26 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); // To store sessions in MongoDB
-
+const users = require('./models/mongo.js');
+const quotesCollection = require('./models/mongo.js');
 const app = express();
 const port = 3000;
+// app.use(session({
+//     secret: 'quotesapp', // Replace with a strong secret key
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: false } // Set secure to true if you're using HTTPS
+// }));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.json());
+
+
+
+
 
 app.use(session({
     secret: 'Thor2024@cc',
@@ -65,6 +76,11 @@ app.get('/dashboard', (req, res) => {
         res.redirect('/signIn');
     }
 });
+
+app.get('/home', (req, res) => {
+    res.render('home');
+});
+
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
