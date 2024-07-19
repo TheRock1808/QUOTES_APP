@@ -26,7 +26,7 @@ async function handleUserSignup(req, res) {
                 id: newUser._id,
                 initials: `${newUser.fname.charAt(0).toUpperCase()}${newUser.lname.charAt(0).toUpperCase()}`,
             };
-            console.log('Signup successful', req.session.user);
+            console.log('Signup successful');
             res.redirect('/dashboard');
         } catch (error) {
             console.error('Error inserting data:', error);

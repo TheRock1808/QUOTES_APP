@@ -15,7 +15,7 @@ async function handleUserSignin(req, res) {
                     id: user._id,
                     initials: `${user.fname.charAt(0).toUpperCase()}${user.lname.charAt(0).toUpperCase()}`,
                 };
-                console.log('User found', req,session.user);
+                console.log('User found');
                 res.redirect('/dashboard');
             } else {
                 console.log('User not found');

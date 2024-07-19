@@ -69,6 +69,15 @@ app.get('/cancel', (req, res) => {
     res.render('index');
 });
 
+app.get('/update', (req, res) => {
+    res.render('updateContent')
+});
+
+app.get('/quotes', (req, res) => {
+    // Fetch quotes and render them
+    res.render('quote');
+});
+
 app.get('/dashboard', (req, res) => {
     if (req.session.user) {
         res.render('dashboard', { user: req.session.user });
@@ -80,6 +89,22 @@ app.get('/dashboard', (req, res) => {
 app.get('/home', (req, res) => {
     res.render('home');
 });
+
+
+// app.post('/user', async (req, res) => {
+//     try {
+//       const userId = req.session.user.id;
+//       const { fname, lname } = req.body;
+//       await users.findByIdAndUpdate(userId, { fname, lname });
+
+//       // Update session initials
+//       req.session.user.initials = `${fname.charAt(0).toUpperCase()}${lname.charAt(0).toUpperCase()}`;
+//       res.redirect('/dashboard');
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send('Server error');
+//     }
+//   });
 
 
 app.listen(port, () => {
