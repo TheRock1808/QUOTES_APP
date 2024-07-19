@@ -1,60 +1,37 @@
-<nav class="bg-[#9fba29]">
- <div class="flex items-center justify-between mx-auto max-w-screen-full">
-   <div class="px-3 py-3 flex space-x-2">
-     <div class="text-white text-3xl font-bold pr-3">
-       Software Quotes
-     </div>
-     <div class="flex space-x-4">
-       <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1">
-         Authors
-       </button>
-       <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1">
-         Home
-       </button>
-       <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1">
-         Quotes
-       </button>
-       <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1">
-         My Quote
-       </button>
-     </div>
-   </div>
-   <div class="flex space-x-2 items-center px-5 ">
-     {/* This should have initial of the user and when clicked show logout button in drop down */}
-     <button class="relative inline-flex items-end justify-center w-10 h-10 overflow-hidden bg-slate-200 rounded-full text-black ">
-       <span class="pb-2">KN</span>
-       {/* drop down menu */}
-       <div
-         id="userDropdown"
-         class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
-       >
-         <a class="">Logout</a>
-       </div>
-     </button>
-   </div>
- </div>
-</nav>
-<div class="flex items-center">
- <div class="mx-auto w-fit">
-   <h1 class="text-2xl font-bold mb-2 mt-4">Add Quote</h1>
-   <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-fit p-4 ">
-     <p class="mb-2">Quote</p>
-     <!-- /* Pending - adding the limit for words */ -->
-     <textarea class="textarea border-2 border-slate-200 rounded-md  w-[700px] h-28"></textarea>
-     <p class="mb-2 mt-2">Author</p>
-     <input class="input border-2 border-slate-200 rounded-md w-[700px] h-10"></input>
-     <p class="mb-2 mt-2">Tags</p>
-     <input class="input border-2 border-slate-200 rounded-md w-[700px] h-10"></input>
-     <div class="flex mt-4 items-center">
-       <div class="mx-auto">
-         <button class="bg-green-600 text-white rounded-md px-4 py-1 mt-2 mr-2">
-           Save
-         </button>
-         <button class="bg-red-600 text-white rounded-md px-4 py-1 mt-2">
-           Cancel
-         </button>
-       </div>
-     </div>
-   </div>
- </div>
-</div>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+  <%- include('partials/header') %>
+
+  <div class="flex-grow flex items-center">
+    <div class="mx-auto w-fit">
+      <h1 class="text-2xl font-bold mb-2 mt-4">Add Quote</h1>
+      <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-fit p-4">
+        <form id="quoteForm" hx-post="/quotes" hx-include="[name=quote],[name=author],[name=tags]" hx-target="body" hx-swap="none">
+          <p class="mb-2">Quote</p>
+          <textarea name="quote" class="textarea border-2 border-slate-200 rounded-md w-[700px] h-28" required></textarea>
+          <p class="mb-2 mt-2">Author</p>
+          <input name="author" class="input border-2 border-slate-200 rounded-md w-[700px] h-10" required></input>
+          <p class="mb-2 mt-2">Tags</p>
+          <input name="tags" class="input border-2 border-slate-200 rounded-md w-[700px] h-10" required></input>
+          <div class="flex mt-4 items-center">
+            <div class="mx-auto">
+              <button type="submit" class="bg-green-600 text-white rounded-md px-4 py-1 mt-2 mr-2">
+                Save
+              </button>
+              <a href="/dashboard" class="bg-red-600 text-white rounded-md px-4 py-1 mt-2">
+                Cancel
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/footer') %>
+
+  <script>
+    function cancelForm() {
+      document.getElementById('quoteForm').reset();
+    }
+  </script>
+</body>

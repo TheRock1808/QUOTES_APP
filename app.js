@@ -2,18 +2,13 @@ const express = require('express');
 const ejs = require('ejs');
 const path = require('path');
 const mongoose = require('mongoose');
+const axios = require('axios');
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); // To store sessions in MongoDB
 const users = require('./models/mongo.js');
 const quotesCollection = require('./models/mongo.js');
 const app = express();
 const port = 3000;
-// app.use(session({
-//     secret: 'quotesapp', // Replace with a strong secret key
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: false } // Set secure to true if you're using HTTPS
-// }));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -45,17 +40,25 @@ const sessionChecker = (req, res, next) => {
 // Routes
 const auth = require('./routes/auth');
 const quotesRouter = require('./routes/quotes');
+app.use('/auth', auth);
+app.use('/quotes', quotesRouter);
 
-app.get('/', (req, res) => {
-    if (req.session.user) {
-        res.redirect('/dashboard');
-    } else {
-        res.render('index');
+app.get('/', async (req, res) => {
+    try {
+        const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
+        const quotes = response1.data;
+        // console.log(quotes)
+        if (req.session.user) {
+            res.redirect('/dashboard');
+        } else {
+            res.render('index', { quotes: quotes  });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
-app.use('/auth', auth);
-app.use('/quotes', quotesRouter);
+
 
 app.get('/signUp', sessionChecker, (req, res) => {
     res.render('auth/signUp');
@@ -69,14 +72,18 @@ app.get('/cancel', (req, res) => {
     res.render('index');
 });
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard',async (req, res) => {
+    const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
+    const quotes = response1.data;
     if (req.session.user) {
-        res.render('dashboard', { user: req.session.user });
+        res.render('dashboard', { user: req.session.user , quotes:quotes, currentPath: '/quotes'});
     } else {
         res.redirect('/signIn');
     }
 });
-
+app.get('/addquote',async (req, res) => {
+    res.render("addQuote")
+});
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);

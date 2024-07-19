@@ -64,5 +64,5 @@ const quotesSchema = new mongoose.Schema({
 });
 
 const users = mongoose.model('users', userlogin);
-module.exports = mongoose.model('quotes', quotesSchema);
+
 module.exports = users;

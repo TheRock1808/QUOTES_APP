@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const quotesCollection = require('../models/mongo.js');
+const quotesCollection = require('../models/quotes.js');
 const quotesreaction = require('../models/quotesreaction.js');
 const { v4: uuidv4 } = require('uuid');
 //1
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {     //quotes post
       // Save the new quote to the database
       await newQuote.save();
   
-      res.status(201).json(newQuote); //created
+      res.status(201).set('HX-Redirect', '/dashboard').json(newQuote); // Created
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

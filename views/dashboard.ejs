@@ -1,7 +1,7 @@
 <body class="bg-gray-100">
     <%- include('partials/header') %>
-                                        <!-- nav_after will come -->
+    <%- include('nav_after') %>                            <!-- nav_after will come -->
     <div id="body" class="container mx-auto p-4">
-    <%- include('quote') %>
+    <%- include('quote'), {quotes:quotes, user:user} %>
     </div>
     <%- include('partials/footer') %>
