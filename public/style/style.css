@@ -581,15 +581,15 @@ video {
 .h-10 {
   height: 2.5rem;
 }
+.h-\[500px\] {
+  height: 500px;
+}
 .h-\[80vh\] {
   height: 80vh;
 }
 .h-fit {
   height: -moz-fit-content;
   height: fit-content;
-}
-.min-h-screen {
-  min-height: 100vh;
 }
 .w-10 {
   width: 2.5rem;
