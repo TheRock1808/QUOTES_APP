@@ -16,12 +16,10 @@ async function handleUserSignin(req, res) {
                     initials: `${user.fname.charAt(0).toUpperCase()}${user.lname.charAt(0).toUpperCase()}`,
                 };
                 console.log('User found');
-                res.redirect('/dashboard');
+                res.status(201).set('HX-Redirect', '/dashboard');
             } else {
                 console.log('User not found');
-                res.render('auth/signIn', {
-                    error: 'Invalid email or password, please check it'
-                });
+                res.status(401).render("auth/signIn", { message: 'Incorrect email or password. Please try again.' });
             }
         } catch (error) {
             console.log('Error occurred:', error);

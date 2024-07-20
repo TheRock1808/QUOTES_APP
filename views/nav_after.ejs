@@ -6,9 +6,8 @@
         <button
           class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 "
           hx-get="/home"
-          hx-target="#display"
+          hx-target="#body"
           hx-swap="innerHTML"
-          
         >
           Home
         </button>
@@ -18,7 +17,6 @@
           hx-swap="innerHTML">
           Authors
         </button>
-       
         <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 " 
         hx-get="/allquote"
           hx-target="#body"
@@ -62,7 +60,7 @@
     <li>
       <button
         hx-get="/update"
-        hx-target="#display"
+        hx-target="#body"
         hx-swap="innerHTML"
         class="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-colors duration-500 ease-in-out w-full text-left"
       >

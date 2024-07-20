@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo'); // To store sessions in MongoDB
 const users = require('./models/mongo.js');
 const quotesCollection = require('./models/mongo.js');
+
 const app = express();
 const port = 3000;
 
@@ -16,16 +17,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.json());
 
-
-
-
-
 app.use(session({
     secret: 'Thor2024@cc',
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/quotesapp' }),
-    cookie: { secure: false } // Change to true if using HTTPS
+    cookie: { secure: false }
 }));
 
 // Middleware to check if the user is logged in
@@ -58,8 +55,6 @@ app.get('/', async (req, res) => {
     }
 });
 
-
-
 app.get('/signUp', sessionChecker, (req, res) => {
     res.render('auth/signUp');
 });
@@ -90,6 +85,7 @@ app.get('/dashboard',async (req, res) => {
         res.redirect('/signIn');
     }
 });
+
 app.get('/addquote',async (req, res) => {
     res.render("addQuote")
 });
