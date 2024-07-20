@@ -58,7 +58,7 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/signUp', sessionChecker, (req, res) => {
-    res.render('auth/signUp');
+    res.render('auth/signUp', {message: ""});
 });
 
 app.get('/signIn', sessionChecker, (req, res) => {

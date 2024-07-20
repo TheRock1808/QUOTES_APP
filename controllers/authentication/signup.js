@@ -12,7 +12,7 @@ async function handleUserSignup(req, res) {
                 {
                 console.log('Text not to keep blank')
                 // res.status(401).render("auth/signIn", { message: 'Incorrect email or password. Please try again.' });
-                res.status(201).set('HX-Redirect', '/').json(fname);
+                res.status(201).set('HX-Redirect', '/',{ message: 'Sign up successful' }).json(fname);
             }
             else
             {

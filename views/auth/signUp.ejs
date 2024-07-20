@@ -1,6 +1,6 @@
 <%- include('../partials/header') %>
 <div class="flex justify-center items-center h-[500px]">
-  <form id="SignUp" hx-post="/auth/signup" hx-include="[name=fname],[name=lname],[name=email],[name=password]" hx-target="#SignUp" hx-swap="innerHTML">
+  <form id="SignUp" hx-post="/auth/signup" hx-include="[name=fname],[name=lname],[name=email],[name=password]" hx-target="#messageContainer" hx-swap="innerHTML">
     <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-[500px]">
       <div class="bg-[#896ab9] text-white py-3 px-3 text-xl rounded-t-md">
         Sign up
@@ -64,6 +64,7 @@
           Cancel
         </button>
       </div>
+      <div id="messageContainer" class="text-center py-2"><%= message  %></div>
     </div>
   </form>
 </div>
