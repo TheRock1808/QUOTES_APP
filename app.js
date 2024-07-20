@@ -76,10 +76,6 @@ app.get('/update', (req, res) => {
     res.render('updateContent')
 });
 
-// app.get('/quotes', (req, res) => {
-//     // Fetch quotes and render them
-//     res.render('quote');
-// });
 
 app.get('/dashboard',async (req, res) => {
     const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
