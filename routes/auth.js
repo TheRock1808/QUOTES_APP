@@ -18,23 +18,31 @@ router.post('/update', async (req, res) => {
     try {
       const userId = req.session.user.id;
       const { fname, lname } = req.body;
-  
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { fname: fname, lname: lname },
-        { new: true }
-      );
-  
-      console.log('Updated User:', updatedUser);
-  
-      if (!updatedUser) {
-        return res.status(404).send('User not found');
+
+      if(fname == ' ' || lname == ' '){
+        console.log('Text not to keep blank')
+        // res.status(401).render("auth/signIn", { message: 'Incorrect email or password. Please try again.' });
+        res.status(201).set('HX-Redirect', '/dashboard').json(fname);
       }
-  
-      // Update session initials
-      req.session.user.initials = `${fname.charAt(0).toUpperCase()}${lname.charAt(0).toUpperCase()}`;
-      req.session.user.name = fname +" "+lname
-      res.redirect('/dashboard');
+      else
+      {
+        const updatedUser = await User.findByIdAndUpdate(
+          userId,
+          { fname: fname, lname: lname },
+          { new: true }
+        );
+    
+        console.log('Updated User:', updatedUser);
+    
+        if (!updatedUser) {
+          return res.status(404).send('User not found');
+        }
+    
+        // Update session initials
+        req.session.user.initials = `${fname.charAt(0).toUpperCase()}${lname.charAt(0).toUpperCase()}`;
+        
+        res.redirect('/dashboard');
+      }
     } catch (error) {
       console.error(error);
       res.status(500).send('Server error');

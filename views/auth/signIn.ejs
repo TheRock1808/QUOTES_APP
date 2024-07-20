@@ -24,18 +24,19 @@
           name="password"
           required
         />
+      <a hx-get="/signUp" hx-target="body" hx-swap="innerHTML" class="cre">Create New Account</a>
       </div>
       <div class="flex justify-center px-4 py-3">
         <button
-          class="bg-[#b29ed1] px-2 py-2 mx-4 rounded-lg text-white"
-          type="submit"
+          class="bg-[#b29ed1] px-2 py-2 mx-4 rounded-lg text-white justify-end"
+          value="login"
         >
           Login
         </button>
         <button
           class="bg-[#d29f3b] px-2 py-2 mx-4 rounded-lg text-white"
-          type="button"
-          onclick="window.location.href='/'"
+          value="cancel"
+          hx-get="/cancel" hx-target="#body" hx-swap="outerHtml" 
         >
           Cancel
         </button>
