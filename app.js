@@ -7,7 +7,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo'); // To store sessions in MongoDB
 const users = require('./models/mongo.js');
 const quotesCollection = require('./models/quotes.js');
-
+const quotesreaction = require('./models/quotesreaction.js');
 const app = express();
 const port = 3000;
 
@@ -50,7 +50,7 @@ app.get('/', async (req, res) => {
         if (req.session.user) {
             res.redirect('/dashboard');
         } else {
-            res.render('index', { quotes });
+            res.render('index', { quotes , likedislikecount:""});
         }
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -77,9 +77,13 @@ app.get('/dashboard', async (req, res) => {
     try {
         const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
         const quotes = response.data;
-
+        const response2 = await axios.get('http://localhost:3000/likedislikecount'); // Fetch quotes using the quotes router
+        const likedislikecount = response2.data.reduce((acc, item) => {
+            acc[item._id] = item;
+            return acc;
+        }, {});
         if (req.session.user) {
-            res.render('dashboard', { user: req.session.user, quotes });
+            res.render('dashboard', { user: req.session.user, quotes, likedislikecount:likedislikecount });
         } else {
             res.redirect('/signIn');
         }
@@ -88,6 +92,34 @@ app.get('/dashboard', async (req, res) => {
     }
 });
 
+app.get('/likedislikecount',async (req, res) => {
+    try {
+        // Aggregate reactions to count likes and dislikes per quote
+        const reactions = await quotesreaction.aggregate([
+            {
+                $group: {
+                    _id: "$quoteId",
+                    likeCount: {
+                        $sum: {
+                            $cond: [{ $eq: ["$like", true] }, 1, 0]
+                        }
+                    },
+                    dislikeCount: {
+                        $sum: {
+                            $cond: [{ $eq: ["$dislike", true] }, 1, 0]
+                        }
+                    }
+                }
+            }
+        ]);
+
+        // Send the reactions data as JSON response
+        res.status(200).json(reactions);
+    } catch (err) {
+        // Handle errors
+        res.status(500).json({ message: err.message });
+    }
+});
 app.get('/addquote', (req, res) => {
     res.render('addQuote');
 });
@@ -101,8 +133,13 @@ app.get('/allquote', async (req, res) => {
         const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
         const quotes = response.data;
 
+        const response2 = await axios.get('http://localhost:3000/likedislikecount'); // Fetch quotes using the quotes router
+        const likedislikecount = response2.data.reduce((acc, item) => {
+            acc[item._id] = item;
+            return acc;
+        }, {});
         if (req.session.user) {
-            res.render('allquote', { user: req.session.user, quotes });
+            res.render('allquote', { user: req.session.user, quotes,likedislikecount });
         } else {
             res.redirect('/signIn');
         }
@@ -110,7 +147,15 @@ app.get('/allquote', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+app.get('/myquote', async (req, res) => {
 
+        if (req.session.user) {
+            res.render('myquote');
+        } else {
+            res.redirect('/signIn');
+        }
+
+});
 app.get('/authors', async (req, res) => {
     try {
         const authors = await quotesCollection.distinct('author');

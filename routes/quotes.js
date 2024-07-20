@@ -104,9 +104,11 @@ router.get('/tags', async (req, res) => {
 // 3.1
 router.patch('/:id/like/up',async (req, res) => {
     try{
+      console.log("LIKE")
+      // res.send("like")
       const { id } = req.params;
       // console.log(`like the quote id ${id}`)
-    const sessionuserId = req.session.user._id;
+    const sessionuserId = req.session.user.id;
     // console.log(sessionuserId)
     let reaction = await quotesreaction.findOne({ quoteId: id, userId : sessionuserId});
     if (!reaction) {
@@ -124,10 +126,14 @@ router.patch('/:id/like/up',async (req, res) => {
       reaction.dislike = false;
     }
 
-    // Save or update the reaction in MongoDB
+  //   // Save or update the reaction in MongoDB
     await reaction.save();
-    console.log(reaction)
-    res.status(200).json(reaction);
+    // const likesCount = await quotesreaction.countDocuments({ quoteId: id, like: true });
+    // console.log(likesCount)
+    // res.send(likesCount);
+    res.send("liked")
+    // console.log(reaction)
+    // res.status(200).json(reaction);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -138,7 +144,7 @@ router.patch('/:id/like/up',async (req, res) => {
 router.patch('/:id/dislike/up', async (req, res) => {
   try {
     const { id } = req.params;
-    const sessionuserId = req.session.user._id;
+    const sessionuserId = req.session.user.id;
 
     let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
     if (!reaction) {
@@ -155,7 +161,8 @@ router.patch('/:id/dislike/up', async (req, res) => {
     }
 
     await reaction.save();
-    res.status(200).json(reaction);
+    // res.status(200).json(reaction);
+    res.send("dislike")
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
