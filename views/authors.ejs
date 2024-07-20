@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authors</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        #author-list label {
+            font-weight: bold;
+            color: black;
+        }
+        .alphabet-link {
+            transition: all 0.3s ease-in-out;
+        }
+        .alphabet-link:hover {
+            color: white;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: scale(1.2) translateX(0);
+        }
+        .alphabet-sidebar {
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+        .alphabet-section {
+            margin-top: 20px;
+            color: #4CAF50;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <h1 class="text-2xl font-bold mb-4 mt-6">Authors</h1>
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-5xl flex">
+        <div class="flex-grow">
+            <form hx-get="/quotes" hx-target="body" hx-swap="none">
+                <div class="mb-4">
+                    <div class="relative">
+                        <input type="text" id="search" placeholder="Type author name" onkeyup="filterAuthors()" class="w-full p-3 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M12.9 14.32a8 8 0 111.414-1.414l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387zm-5.9-5.32a6 6 0 1112 0 6 6 0 01-12 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <ul id="author-list" class="space-y-2 w-full">
+                        <% let currentLetter = ''; %>
+                        <% authors.forEach(author => { %>
+                            <% if (author[0].toUpperCase() !== currentLetter) { %>
+                                <% currentLetter = author[0].toUpperCase(); %>
+                                <li class="alphabet-section text-2xl font-bold"><%= currentLetter %></li>
+                            <% } %>
+                            <li class="flex items-center">
+                                <input type="radio" name="author" value="<%= author %>" id="<%= author %>" class="mr-2">
+                                <label for="<%= author %>" class="text-lg"><%= author %></label>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+                <button type="submit" class="mt-4 w-full py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">View Quotes</button>
+            </form>
+        </div>
+        <div class="alphabet-sidebar flex flex-col items-center">
+            <a href="#" class="alphabet-link text-lime-600 mb-2 p-2" onclick="filterByAlphabet(event, 'a')">A</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'b')">B</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'c')">C</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'd')">D</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'e')">E</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'f')">F</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'g')">G</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'h')">H</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'i')">I</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'j')">J</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'k')">K</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'l')">L</a>
+            <a href="#" class="alphabet-link text-lime-600 mb-2 p-2" onclick="filterByAlphabet(event, 'm')">M</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'n')">N</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'o')">O</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'p')">P</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'q')">Q</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'r')">R</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 's')">S</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 't')">T</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'u')">U</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'v')">V</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'w')">W</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'x')">X</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'y')">Y</a>
+            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'z')">Z</a>
+        </div>
+    </div>
+    <script>
+        function filterAuthors() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const authorList = document.getElementById('author-list');
+            const authors = authorList.getElementsByTagName('li');
+            
+            for (let i = 0; i < authors.length; i++) {
+                const author = authors[i].textContent || authors[i].innerText;
+                if (author.toLowerCase().indexOf(searchInput) > -1) {
+                    authors[i].style.display = '';
+                } else {
+                    authors[i].style.display = 'none';
+                }
+            }
+        }
+        
+        async function filterByAlphabet(event, letter) {
+            event.preventDefault();
+            document.getElementById('search').value = '';
+            const authorList = document.getElementById('author-list');
+            
+            const response = await fetch(`/authors/${letter}`);
+            const authors = await response.json();
+            
+            authorList.innerHTML = ''; // Clear previous results
+
+            if (authors.length > 0) {
+                const section = document.createElement('li');
+                section.className = 'alphabet-section text-2xl font-bold';
+                section.textContent = letter.toUpperCase();
+                authorList.appendChild(section);
+
+                authors.forEach(author => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'flex items-center';
+                    listItem.innerHTML = `<input type="radio" name="author" value="${author}" id="${author}" class="mr-2"><label for="${author}" class="text-lg">${author}</label>`;
+                    authorList.appendChild(listItem);
+                });
+            } else {
+                const noAuthors = document.createElement('li');
+                noAuthors.className = 'text-lg';
+                noAuthors.textContent = 'No authors found';
+                authorList.appendChild(noAuthors);
+            }
+        }
+    </script>
+</body>
+</html>

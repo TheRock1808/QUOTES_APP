@@ -99,6 +99,34 @@ app.get('/allquote', async(req, res) => {
         res.redirect('/signIn');
     }
 });
+
+app.get('/authors', async (req, res) => {
+    const authors = await quotesCollection.distinct("author");
+    authors.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())); // Ensure case-insensitive sorting
+    res.render('authors', { authors: authors });
+});
+
+app.get('/quotes', async (req, res) => {
+    const author = req.query.author;
+    const quotes = await quotesCollection.find({ author: author }).toArray();
+    res.render('quotes', { author: author, quotes: quotes });
+});
+
+app.get('/authors/:letter', async (req, res) => {
+    const letter = req.params.letter.toUpperCase();
+    const authors = await quotesCollection
+        .aggregate([
+            { $match: { author: { $regex: `^${letter}`, $options: 'i' } } },
+            { $group: { _id: "$author" } },
+            { $sort: { _id: 1 } },
+            { $project: { _id: 0, author: "$_id" } }
+        ])
+        .toArray();
+
+    const authorNames = authors.map(authorDoc => authorDoc.author);
+    res.json(authorNames);
+});
+
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
 });
