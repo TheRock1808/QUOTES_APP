@@ -1,13 +1,12 @@
 <%- include('../partials/header') %>
 <div class="flex justify-center items-center h-[500px]">
-  <form id="SignUp" hx-post="auth/signup" hx-include="[name=fname],[name=lname],[name=email],[name=password]" hx-target="body" hx-swap="none"> 
-    <!--  action="/auth/signup" method="post" -->
+  <form id="SignUp" hx-post="/auth/signup" hx-include="[name=fname],[name=lname],[name=email],[name=password]" hx-target="#SignUp" hx-swap="innerHTML">
     <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-[500px]">
       <div class="bg-[#896ab9] text-white py-3 px-3 text-xl rounded-t-md">
         Sign up
       </div>
       <div class="flex">
-        <div class="py-3 px-3">
+        <div class="py-3 px-3 w-1/2">
           First name
           <input
             class="px-2 py-1 w-full border-2 border-slate-200 rounded-xl"
@@ -17,7 +16,7 @@
             required
           />
         </div>
-        <div class="py-3 px-3">
+        <div class="py-3 px-3 w-1/2">
           Last name
           <input
             class="px-2 py-1 w-full border-2 border-slate-200 rounded-xl"
@@ -48,22 +47,20 @@
           required
         />
       </div>
-
       <div class="flex justify-center px-4 py-3">
         <button
-          class="bg-[#b29ed1] px-2 py-2 mx-4 rounded-lg text-white justify-end"
-          value="signUp"
+          class="bg-[#b29ed1] px-2 py-2 mx-4 rounded-lg text-white"
+          type="submit"
         >
           Sign up
         </button>
         <button
           class="bg-[#d29f3b] px-2 py-2 mx-4 rounded-lg text-white"
-          value="cancel"
-          hx-get="/cancel" hx-target="#body" hx-swap="outerHtml"  
+          type="button"
+          onclick="window.location.href='/'"
         >
           Cancel
         </button>
-        <!--one the click of cancel it should render quotes-->
       </div>
     </div>
   </form>
