@@ -8,17 +8,15 @@
           hx-get="/home"
           hx-target="#body"
           hx-swap="innerHTML"
-          
         >
           Home
         </button>
         <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 "
-        hx-get="/author"
+        hx-get="/authors"
           hx-target="#body"
           hx-swap="innerHTML">
           Authors
         </button>
-       
         <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 " 
         hx-get="/allquote"
           hx-target="#body"
@@ -35,6 +33,7 @@
     </div>
     <div class="flex items-center px-5">
       <!-- This should have initial of the user and when clicked show logout button in drop down -->
+      <span class="uppercase font-bold text-lg mr-5"><%= user.name %></span>
       <button
         id="userButton"
         class="relative flex w-12 h-12 overflow-hidden rounded-full text-black bg-slate-200 focus:ring-2 focus:ring-slate-500 "
@@ -62,7 +61,7 @@
     <li>
       <button
         hx-get="/update"
-        hx-target="#display"
+        hx-target="#body"
         hx-swap="innerHTML"
         class="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-colors duration-500 ease-in-out w-full text-left"
       >

@@ -7,6 +7,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo'); // To store sessions in MongoDB
 const users = require('./models/mongo.js');
 const quotesCollection = require('./models/mongo.js');
+
 const app = express();
 const port = 3000;
 
@@ -16,16 +17,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.json());
 
-
-
-
-
 app.use(session({
     secret: 'Thor2024@cc',
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/quotesapp' }),
-    cookie: { secure: false } // Change to true if using HTTPS
+    cookie: { secure: false }
 }));
 
 // Middleware to check if the user is logged in
@@ -58,8 +55,6 @@ app.get('/', async (req, res) => {
     }
 });
 
-
-
 app.get('/signUp', sessionChecker, (req, res) => {
     res.render('auth/signUp');
 });
@@ -76,10 +71,6 @@ app.get('/update', (req, res) => {
     res.render('updateContent')
 });
 
-// app.get('/quotes', (req, res) => {
-//     // Fetch quotes and render them
-//     res.render('quote');
-// });
 
 app.get('/dashboard',async (req, res) => {
     const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
@@ -90,6 +81,7 @@ app.get('/dashboard',async (req, res) => {
         res.redirect('/signIn');
     }
 });
+
 app.get('/addquote',async (req, res) => {
     res.render("addQuote")
 });
@@ -107,6 +99,34 @@ app.get('/allquote', async(req, res) => {
         res.redirect('/signIn');
     }
 });
+
+app.get('/authors', async (req, res) => {
+    const authors = await quotesCollection.distinct("author");
+    authors.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())); // Ensure case-insensitive sorting
+    res.render('authors', { authors: authors });
+});
+
+// app.get('/quotes', async (req, res) => {
+//     const author = req.query.author;
+//     const quotes = await quotesCollection.find({ author: author }).toArray();
+//     res.render('quotes', { author: author, quotes: quotes });
+// });
+
+app.get('/authors/:letter', async (req, res) => {
+    const letter = req.params.letter.toUpperCase();
+    const authors = await quotesCollection
+        .aggregate([
+            { $match: { author: { $regex: `^${letter}`, $options: 'i' } } },
+            { $group: { _id: "$author" } },
+            { $sort: { _id: 1 } },
+            { $project: { _id: 0, author: "$_id" } }
+        ])
+        .toArray();
+
+    const authorNames = authors.map(authorDoc => authorDoc.author);
+    res.json(authorNames);
+});
+
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
 });

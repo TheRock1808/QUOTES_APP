@@ -73,6 +73,18 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+//5
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const quote = await quotesCollection.findById(id);
+    if (!quote) return res.status(404).json({ message: 'Quote not found' });
+    res.json(quote);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 //6
 router.get('/tags', async (req, res) => {
   try {
@@ -87,22 +99,10 @@ router.get('/tags', async (req, res) => {
   }
 });
 
-//5
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const quote = await quotesCollection.findById(id);
-    if (!quote) return res.status(404).json({ message: 'Quote not found' });
-    res.json(quote);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
 
 //part 3
 // 3.1
 router.patch('/:id/like/up',async (req, res) => {
-
     try{
       const { id } = req.params;
       // console.log(`like the quote id ${id}`)

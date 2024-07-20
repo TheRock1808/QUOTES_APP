@@ -10,7 +10,7 @@ async function handleUserSignup(req, res) {
 
             const existingUser = await users.findOne({ email });
             if (existingUser) {
-                return res.status(409).render('auth/signUp', { error: 'User already exists' });
+                return res.status(409).render('auth/signUp', { message: 'User already exists' });
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,10 +24,11 @@ async function handleUserSignup(req, res) {
             const newUser = await users.create(data);
             req.session.user = {
                 id: newUser._id,
+                name: newUser.fname +" "+ newUser.lname,
                 initials: `${newUser.fname.charAt(0).toUpperCase()}${newUser.lname.charAt(0).toUpperCase()}`,
             };
             console.log('Signup successful');
-            res.redirect('/dashboard');
+            res.status(201).set('HX-Redirect', '/dashboard').send();
         } catch (error) {
             console.error('Error inserting data:', error);
             res.status(500).send({ message: 'Internal Server Error' });

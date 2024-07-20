@@ -33,7 +33,7 @@ router.post('/update', async (req, res) => {
   
       // Update session initials
       req.session.user.initials = `${fname.charAt(0).toUpperCase()}${lname.charAt(0).toUpperCase()}`;
-      
+      req.session.user.name = fname +" "+lname
       res.redirect('/dashboard');
     } catch (error) {
       console.error(error);
