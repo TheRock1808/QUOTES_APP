@@ -1,6 +1,6 @@
 const users = require('../../models/mongo');
 const bcrypt = require('bcrypt');
-const session = require('express-session')
+const session = require('express-session');
 
 async function handleUserSignin(req, res) {
     if (req.session.user) {
@@ -13,6 +13,7 @@ async function handleUserSignin(req, res) {
             if (user && await bcrypt.compare(password, user.password)) {
                 req.session.user = {
                     id: user._id,
+                    name: user.fname +" "+ user.lname,
                     initials: `${user.fname.charAt(0).toUpperCase()}${user.lname.charAt(0).toUpperCase()}`,
                 };
                 console.log('User found');
