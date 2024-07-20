@@ -106,11 +106,11 @@ app.get('/authors', async (req, res) => {
     res.render('authors', { authors: authors });
 });
 
-app.get('/quotes', async (req, res) => {
-    const author = req.query.author;
-    const quotes = await quotesCollection.find({ author: author }).toArray();
-    res.render('quotes', { author: author, quotes: quotes });
-});
+// app.get('/quotes', async (req, res) => {
+//     const author = req.query.author;
+//     const quotes = await quotesCollection.find({ author: author }).toArray();
+//     res.render('quotes', { author: author, quotes: quotes });
+// });
 
 app.get('/authors/:letter', async (req, res) => {
     const letter = req.params.letter.toUpperCase();
