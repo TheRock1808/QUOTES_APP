@@ -556,6 +556,9 @@ video {
 .left-0 {
   left: 0px;
 }
+.right-3 {
+  right: 0.75rem;
+}
 .right-\[13\.375rem\] {
   right: 13.375rem;
 }
