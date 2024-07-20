@@ -6,6 +6,10 @@
     <title>Authors</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        #author-list-container {
+            max-height: 400px; /* Adjust height as needed */
+            overflow-y: auto;  /* Enable vertical scrolling */
+        }
         #author-list label {
             font-weight: bold;
             color: black;
@@ -47,19 +51,21 @@
                     </div>
                 </div>
                 <div class="flex flex-col">
-                    <ul id="author-list" class="space-y-2 w-full">
-                        <% let currentLetter = ''; %>
-                        <% authors.forEach(author => { %>
-                            <% if (author[0].toUpperCase() !== currentLetter) { %>
-                                <% currentLetter = author[0].toUpperCase(); %>
-                                <li class="alphabet-section text-2xl font-bold"><%= currentLetter %></li>
-                            <% } %>
-                            <li class="flex items-center">
-                                <input type="radio" name="author" value="<%= author %>" id="<%= author %>" class="mr-2">
-                                <label for="<%= author %>" class="text-lg"><%= author %></label>
-                            </li>
-                        <% }); %>
-                    </ul>
+                    <div id="author-list-container">
+                        <ul id="author-list" class="space-y-2 w-full">
+                            <% let currentLetter = ''; %>
+                            <% authors.forEach(author => { %>
+                                <% if (author[0].toUpperCase() !== currentLetter) { %>
+                                    <% currentLetter = author[0].toUpperCase(); %>
+                                    <li class="alphabet-section text-2xl font-bold"><%= currentLetter %></li>
+                                <% } %>
+                                <li class="flex items-center">
+                                    <input type="radio" name="author" value="<%= author %>" id="<%= author %>" class="mr-2">
+                                    <label for="<%= author %>" class="text-lg"><%= author %></label>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
                 </div>
                 <button type="submit" class="mt-4 w-full py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">View Quotes</button>
             </form>

@@ -6,10 +6,12 @@ const axios = require('axios');
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); // To store sessions in MongoDB
 const users = require('./models/mongo.js');
-const quotesCollection = require('./models/mongo.js');
+const quotesCollection = require('./models/quotes.js');
 
 const app = express();
 const port = 3000;
+
+mongoose.connect('mongodb://127.0.0.1:27017/quotesapp', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -42,13 +44,13 @@ app.use('/quotes', quotesRouter);
 
 app.get('/', async (req, res) => {
     try {
-        const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
-        const quotes = response1.data;
-        // console.log(quotes)
+        const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
+        const quotes = response.data;
+
         if (req.session.user) {
             res.redirect('/dashboard');
         } else {
-            res.render('index', { quotes: quotes  });
+            res.render('index', { quotes });
         }
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -68,63 +70,74 @@ app.get('/cancel', (req, res) => {
 });
 
 app.get('/update', (req, res) => {
-    res.render('updateContent')
+    res.render('updateContent');
 });
 
+app.get('/dashboard', async (req, res) => {
+    try {
+        const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
+        const quotes = response.data;
 
-app.get('/dashboard',async (req, res) => {
-    const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
-    const quotes = response1.data;
-    if (req.session.user) {
-        res.render('dashboard', { user: req.session.user , quotes:quotes});
-    } else {
-        res.redirect('/signIn');
+        if (req.session.user) {
+            res.render('dashboard', { user: req.session.user, quotes });
+        } else {
+            res.redirect('/signIn');
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
-app.get('/addquote',async (req, res) => {
-    res.render("addQuote")
+app.get('/addquote', (req, res) => {
+    res.render('addQuote');
 });
 
 app.get('/home', (req, res) => {
     res.render('home');
 });
 
-app.get('/allquote', async(req, res) => {
-    const response1 = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
-    const quotes = response1.data;
-    if (req.session.user) {
-        res.render('allquote', { user: req.session.user , quotes:quotes});
-    } else {
-        res.redirect('/signIn');
+app.get('/allquote', async (req, res) => {
+    try {
+        const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
+        const quotes = response.data;
+
+        if (req.session.user) {
+            res.render('allquote', { user: req.session.user, quotes });
+        } else {
+            res.redirect('/signIn');
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
     }
 });
 
 app.get('/authors', async (req, res) => {
-    const authors = await quotesCollection.distinct("author");
-    authors.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())); // Ensure case-insensitive sorting
-    res.render('authors', { authors: authors });
+    try {
+        const authors = await quotesCollection.distinct('author');
+        authors.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())); // Ensure case-insensitive sorting
+        res.render('authors', { authors });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
-// app.get('/quotes', async (req, res) => {
-//     const author = req.query.author;
-//     const quotes = await quotesCollection.find({ author: author }).toArray();
-//     res.render('quotes', { author: author, quotes: quotes });
-// });
-
 app.get('/authors/:letter', async (req, res) => {
-    const letter = req.params.letter.toUpperCase();
-    const authors = await quotesCollection
-        .aggregate([
-            { $match: { author: { $regex: `^${letter}`, $options: 'i' } } },
-            { $group: { _id: "$author" } },
-            { $sort: { _id: 1 } },
-            { $project: { _id: 0, author: "$_id" } }
-        ])
-        .toArray();
+    try {
+        const letter = req.params.letter.toUpperCase();
+        const authors = await quotesCollection
+            .aggregate([
+                { $match: { author: { $regex: `^${letter}`, $options: 'i' } } },
+                { $group: { _id: '$author' } },
+                { $sort: { _id: 1 } },
+                { $project: { _id: 0, author: '$_id' } }
+            ])
+            .toArray();
 
-    const authorNames = authors.map(authorDoc => authorDoc.author);
-    res.json(authorNames);
+        const authorNames = authors.map(authorDoc => authorDoc.author);
+        res.json(authorNames);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
 app.listen(port, () => {
