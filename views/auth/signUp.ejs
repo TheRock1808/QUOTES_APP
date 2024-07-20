@@ -1,4 +1,14 @@
 <%- include('../partials/header') %>
+<style>
+  .acc{
+    text-decoration-line: underline;
+    color: blue;
+  }
+
+  .acc:hover{
+    color: rgb(86, 75, 244);
+  }
+</style>
 <div class="flex justify-center items-center h-[500px]">
   <form id="SignUp" hx-post="/auth/signup" hx-include="[name=fname],[name=lname],[name=email],[name=password]" hx-target="#messageContainer" hx-swap="innerHTML">
     <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-[500px]">
@@ -47,7 +57,7 @@
           required
           minlength="8"
         />
-        <a class="acc" hx-get="/signIn" hx-target="body" hx-swap="innerHTML">Already have an account?</a>
+        <a class="acc" hx-get="/signIn" hx-target="#body" hx-swap="innerHTML">Already have an account?</a>
       </div>
       <div class="flex justify-center px-4 py-3">
         <button
@@ -58,8 +68,7 @@
         </button>
         <button
           class="bg-[#d29f3b] px-2 py-2 mx-4 rounded-lg text-white"
-          type="button"
-          hx-get="/cancel" hx-target="#body" hx-swap="outerHtml" 
+          hx-get="/cancel" hx-target="#body" hx-swap="outerHTML" 
         >
           Cancel
         </button>

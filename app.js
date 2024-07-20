@@ -65,8 +65,10 @@ app.get('/signIn', sessionChecker, (req, res) => {
     res.render('auth/signIn');
 });
 
-app.get('/cancel', (req, res) => {
-    res.render('index');
+app.get('/cancel', async (req, res) => {
+    const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
+    const quotes = response.data;
+    res.render('allquote', { user: req.session.user, quotes });
 });
 
 app.get('/update', (req, res) => {
@@ -123,22 +125,22 @@ app.get('/authors', async (req, res) => {
 
 app.get('/authors/:letter', async (req, res) => {
     try {
-        const letter = req.params.letter.toUpperCase();
-        const authors = await quotesCollection
-            .aggregate([
-                { $match: { author: { $regex: `^${letter}`, $options: 'i' } } },
-                { $group: { _id: '$author' } },
-                { $sort: { _id: 1 } },
-                { $project: { _id: 0, author: '$_id' } }
-            ])
-            .toArray();
-
-        const authorNames = authors.map(authorDoc => authorDoc.author);
-        res.json(authorNames);
+      const letter = req.params.letter.toUpperCase();
+      const authors = await quotesCollection
+        .aggregate([
+          { $match: { author: { $regex: `^${letter}`, $options: 'i' } } },
+          { $group: { _id: '$author' } },
+          { $sort: { _id: 1 } },
+          { $project: { _id: 0, author: '$_id' } }
+        ]);
+  
+      const authorNames = authors.map(authorDoc => authorDoc.author);
+      res.json(authorNames);
     } catch (err) {
-        res.status(500).json({ message: err.message });
+      console.error('Error fetching authors:', err);
+      res.status(500).json({ message: err.message });
     }
-});
+  });
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);

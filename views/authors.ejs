@@ -7,8 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         #author-list-container {
-            max-height: 400px; /* Adjust height as needed */
-            overflow-y: auto;  /* Enable vertical scrolling */
+            overflow-y: auto; 
         }
         #author-list label {
             font-weight: bold;
@@ -33,26 +32,40 @@
             color: #4CAF50;
             text-decoration: underline;
         }
+        .alphabet-link:hover {
+            text-decoration: none;
+        }
+        .alphabet-link.active {
+            color: white;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: scale(1.2) translateX(0);
+        }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+<body class="h-auto">
+    <div class="flex flex-col items-center justify-center bg-gray-100">
     <h1 class="text-2xl font-bold mb-4 mt-6">Authors</h1>
-    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-5xl flex">
+    <div class="bg-white p-6 rounded-lg shadow-md w-full h-auto max-w-5xl flex">
         <div class="flex-grow">
-            <form hx-get="/quotes" hx-target="body" hx-swap="none">
+            <form hx-get="/quotes" hx-target="body" hx-include="[name=author]" hx-swap="none">
                 <div class="mb-4">
                     <div class="relative">
-                        <input type="text" id="search" placeholder="Type author name" onkeyup="filterAuthors()" class="w-full p-3 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <input type="text" id="search" placeholder="Type author name" onkeyup="filterAuthors()"
+                            class="w-full p-3 pl-12 pr-4 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                             <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M12.9 14.32a8 8 0 111.414-1.414l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387zm-5.9-5.32a6 6 0 1112 0 6 6 0 01-12 0z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd"
+                                    d="M12.9 14.32a8 8 0 111.414-1.414l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387zm-5.9-5.32a6 6 0 1112 0 6 6 0 01-12 0z"
+                                    clip-rule="evenodd"></path>
                             </svg>
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col w-24">
                     <div id="author-list-container">
-                        <ul id="author-list" class="space-y-2 w-full">
+                        <ul id="author-list" class="space-y-2">
                             <% let currentLetter = ''; %>
                             <% authors.forEach(author => { %>
                                 <% if (author[0].toUpperCase() !== currentLetter) { %>
@@ -67,7 +80,7 @@
                         </ul>
                     </div>
                 </div>
-                <button type="submit" class="mt-4 w-full py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">View Quotes</button>
+                <button type="submit" value="quote" class="mt-4 w-full py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">View Quotes</button>
             </form>
         </div>
         <div class="alphabet-sidebar flex flex-col items-center">
@@ -99,6 +112,7 @@
             <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'z')">Z</a>
         </div>
     </div>
+</div>
     <script>
         function filterAuthors() {
             const searchInput = document.getElementById('search').value.toLowerCase();
