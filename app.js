@@ -77,6 +77,7 @@ app.get('/dashboard', async (req, res) => {
     try {
         const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
         const quotes = response.data;
+        
         const response2 = await axios.get('http://localhost:3000/likedislikecount'); // Fetch quotes using the quotes router
         const likedislikecount = response2.data.reduce((acc, item) => {
             acc[item._id] = item;
@@ -116,7 +117,6 @@ app.get('/likedislikecount',async (req, res) => {
         // Send the reactions data as JSON response
         res.status(200).json(reactions);
     } catch (err) {
-        // Handle errors
         res.status(500).json({ message: err.message });
     }
 });
@@ -130,10 +130,10 @@ app.get('/home', (req, res) => {
 
 app.get('/allquote', async (req, res) => {
     try {
-        const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
+        const response = await axios.get('http://localhost:3000/quotes'); 
         const quotes = response.data;
 
-        const response2 = await axios.get('http://localhost:3000/likedislikecount'); // Fetch quotes using the quotes router
+        const response2 = await axios.get('http://localhost:3000/likedislikecount'); 
         const likedislikecount = response2.data.reduce((acc, item) => {
             acc[item._id] = item;
             return acc;

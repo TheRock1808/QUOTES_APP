@@ -1,4 +1,5 @@
 <!-- views/partials/quote.ejs -->
+ 
 <div class="border-2 border-yellow-600 rounded-md p-4 relative bg-white shadow-md">
   <p class="mb-4 text-gray-800"><%= quote.quote %></p>
   <div class="absolute bottom-2 right-3 bg-blue-600 text-white px-2 py-1 rounded-md">
@@ -7,17 +8,33 @@
   <% if (user) { %>
     <!-- like / dislike -->
     <div class="flex space-x-2">
-      <button class="like-btn" hx-patch="/quotes/<%= quote._id %>/like/up" hx-target="#quote-<%= quote._id %>-like" hx-swap="innerHTML" aria-label="Like">
+      <button class="like-btn" 
+        hx-patch="/quotes/<%= quote._id %>/like/up" 
+        hx-target="#quote-<%= quote._id %>-like" 
+        hx-swap="innerHTML" 
+        aria-label="Like">
         <svg class="h-8 w-8 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
         </svg>
-        <span class="text-green-400 like-count" id="quote-<%= quote._id %>-like"><%= (likedislikecount[quote._id] && likedislikecount[quote._id].likeCount) || 0 %></span>
+        <span class="text-green-400 like-count" 
+          id="quote-<%= quote._id %>-like">
+        <%= (likedislikecount[quote._id] && likedislikecount[quote._id].likeCount) || 0 %>
+    </span>
       </button>
-      <button class="dislike-btn" hx-patch="/quotes/<%= quote._id %>/dislike/up" hx-target="#quote-<%= quote._id %>-dislike" hx-swap="outerHTML" aria-label="Dislike" >
+
+      
+      <button class="dislike-btn" 
+        hx-patch="/quotes/<%= quote._id %>/dislike/up" 
+        hx-target="#quote-<%= quote._id %>-dislike" 
+        hx-swap="innerHTML" 
+        aria-label="Dislike">
         <svg class="h-8 w-8 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
         </svg>
-        <span class="text-red-400 dislike-count" id="quote-<%= quote._id %>-dislike"><%= (likedislikecount[quote._id] && likedislikecount[quote._id].dislikeCount) || 0 %></span>
+        <span class="text-red-400 dislike-count" 
+          id="quote-<%= quote._id %>-dislike">
+        <%= (likedislikecount[quote._id] && likedislikecount[quote._id].dislikeCount) || 0 %>
+    </span>
       </button>
     </div>
   <% } %>
@@ -30,3 +47,29 @@
     </div>
   <% } %>
 </div>
+<script>
+  document.addEventListener('htmx:afterOnLoad', function (event) {
+      try {
+          var response = JSON.parse(event.detail.xhr.responseText);
+          var targetId = event.detail.target.id;
+
+          if (response.likesCount !== undefined && response.dislikesCount !== undefined && response.status == "likeup" || response.status == "likedown") {
+              var likeElement = document.querySelector("#" + targetId);
+              var dislikeElement = document.querySelector("#" + targetId.replace("like", "dislike"));
+              
+              likeElement.innerHTML = response.likesCount;
+              dislikeElement.innerHTML = response.dislikesCount;
+          }
+          if (response.likesCount !== undefined && response.dislikesCount !== undefined && response.status == "dislikeup" || response.status == "dislikedown") {
+              var dislikeElement = document.querySelector("#" + targetId);
+              var likeElement = document.querySelector("#" + targetId.replace("dislike", "like"));
+              
+              likeElement.innerHTML = response.likesCount;
+              dislikeElement.innerHTML = response.dislikesCount;
+          }
+          
+      } catch (e) {
+          console.error("Error parsing JSON response: ", e);
+      }
+  });
+</script>

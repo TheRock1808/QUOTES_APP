@@ -3,6 +3,16 @@ const router = express.Router();
 const quotesCollection = require('../models/quotes.js');
 const quotesreaction = require('../models/quotesreaction.js');
 const { v4: uuidv4 } = require('uuid');
+
+router.get('/allquotereactions', async (req, res) => {
+  try {
+    // Fetch all quote reactions from the database
+    const quotes = await quotesreaction.find();
+    res.json(quotes);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 //1
 router.get('/', async (req, res) => {     //quotes get
   const { quote, author } = req.query;
@@ -26,7 +36,6 @@ router.get('/', async (req, res) => {     //quotes get
 //2
 router.post('/', async (req, res) => {     //quotes post
     const { quote, author, tags } = req.body; 
-    // console.log(quote)
     try {
       const newQuote = new quotesCollection({ quote, author, tags });
   
@@ -104,15 +113,11 @@ router.get('/tags', async (req, res) => {
 // 3.1
 router.patch('/:id/like/up',async (req, res) => {
     try{
-      console.log("LIKE")
-      // res.send("like")
+      // console.log("LIKE")
       const { id } = req.params;
-      // console.log(`like the quote id ${id}`)
     const sessionuserId = req.session.user.id;
-    // console.log(sessionuserId)
     let reaction = await quotesreaction.findOne({ quoteId: id, userId : sessionuserId});
     if (!reaction) {
-      // Create a new reaction if it doesn't exist
       reaction = new quotesreaction({
         _id: uuidv4(),
         like: true,
@@ -121,19 +126,15 @@ router.patch('/:id/like/up',async (req, res) => {
         userId: sessionuserId,  
       });
     } else {
-      // Update existing reaction
       reaction.like = true;
       reaction.dislike = false;
     }
 
-  //   // Save or update the reaction in MongoDB
     await reaction.save();
-    // const likesCount = await quotesreaction.countDocuments({ quoteId: id, like: true });
-    // console.log(likesCount)
-    // res.send(likesCount);
-    res.send("liked")
-    // console.log(reaction)
-    // res.status(200).json(reaction);
+const likesCount = await quotesreaction.countDocuments({ quoteId: id, like: true });
+const dislikesCount = await quotesreaction.countDocuments({ quoteId: id, dislike: true });
+res.json({status:"likeup",likesCount,dislikesCount});
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -161,8 +162,9 @@ router.patch('/:id/dislike/up', async (req, res) => {
     }
 
     await reaction.save();
-    // res.status(200).json(reaction);
-    res.send("dislike")
+    const likesCount = await quotesreaction.countDocuments({ quoteId: id, like: true });
+    const dislikesCount = await quotesreaction.countDocuments({ quoteId: id, dislike: true });
+    res.json({status:"dislikeup",likesCount,dislikesCount});
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -172,13 +174,15 @@ router.patch('/:id/dislike/up', async (req, res) => {
 router.patch('/:id/like/down', async (req, res) => {
   try {
     const { id } = req.params;
-    const sessionuserId = req.session.user._id;
-
+    const sessionuserId = req.session.user.id;
+    // console.log("likedown")
     let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
     if (reaction) {
       reaction.like = false;
       await reaction.save();
-      res.status(200).json(reaction);
+      const likesCount = await quotesreaction.countDocuments({ quoteId: id, like: true });
+    const dislikesCount = await quotesreaction.countDocuments({ quoteId: id, dislike: true });
+    res.json({status:"likedown",likesCount,dislikesCount});
     } else {
       res.status(404).json({ message: 'Reaction not found' });
     }
@@ -191,13 +195,15 @@ router.patch('/:id/like/down', async (req, res) => {
 router.patch('/:id/dislike/down', async (req, res) => {
   try {
     const { id } = req.params;
-    const sessionuserId = req.session.user._id;
+    const sessionuserId = req.session.user.id;
 
     let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
     if (reaction) {
       reaction.dislike = false;
       await reaction.save();
-      res.status(200).json(reaction);
+      const likesCount = await quotesreaction.countDocuments({ quoteId: id, like: true });
+    const dislikesCount = await quotesreaction.countDocuments({ quoteId: id, dislike: true });
+    res.json({status:"dislikedown",likesCount,dislikesCount});
     } else {
       res.status(404).json({ message: 'Reaction not found' });
     }
