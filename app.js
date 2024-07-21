@@ -58,7 +58,7 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/signUp', sessionChecker, (req, res) => {
-    res.render('auth/signUp', {message: ""});
+    res.render('auth/signUp', {message: " "});
 });
 
 app.get('/signIn', sessionChecker, (req, res) => {
@@ -83,7 +83,7 @@ app.get('/dashboard', async (req, res) => {
         if (req.session.user) {
             res.render('dashboard', { user: req.session.user, quotes });
         } else {
-            res.redirect('/signIn');
+            res.redirect('/');
         }
     } catch (err) {
         res.status(500).json({ message: err.message });

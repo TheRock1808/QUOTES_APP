@@ -8,7 +8,17 @@
   .acc:hover{
     color: rgb(86, 75, 244);
   }
+  
+  #messageContainer {
+    padding: 10px; /* Add padding around the text */
+    margin-bottom: 10px; /* Add space between error messages */
+    color: #721c24; /* Text color (dark red) */
+    background-color: #f8d7da; /* Background color (light red) */
+    border: 1px solid #f5c6cb; /* Border color (lighter red) */
+    border-radius: 4px; /* Rounded corners */
+  }
 </style>
+
 <div class="flex justify-center items-center h-[500px]">
   <form id="SignUp" hx-post="/auth/signup" hx-include="[name=fname],[name=lname],[name=email],[name=password]" hx-target="#messageContainer" hx-swap="innerHTML">
     <div class="bg-white ring-1 ring-slate-400 shadow-xl rounded-md w-[500px]">
