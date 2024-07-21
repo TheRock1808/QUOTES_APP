@@ -8,6 +8,7 @@ const MongoStore = require('connect-mongo'); // To store sessions in MongoDB
 const users = require('./models/mongo.js');
 const quotesCollection = require('./models/quotes.js');
 const quotesreaction = require('./models/quotesreaction.js');
+const Quote = require('./models/quotes.js');
 const app = express();
 const port = 3000;
 
@@ -184,6 +185,36 @@ app.get('/authors/:letter', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
+app.get('/search', async (req, res) => {
+    try {
+      const { filter, search } = req.query;
+      const query = {};
+  
+      if (search) {
+        const searchRegex = new RegExp(search, 'i');
+        if (filter === 'author') {
+          query.author = searchRegex;
+        } else if (filter === 'quote') {
+          query.text = searchRegex;
+        } else if (filter === 'tags') {
+          query.tags = searchRegex;
+        } else {
+          query.$or = [
+            { author: searchRegex },
+            { text: searchRegex },
+            { tags: searchRegex },
+          ];
+        }
+      }
+  
+      const quotes = await Quote.find(query);
+      console.log(quotes); // Log the quotes to verify structure
+      res.json(quotes);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
