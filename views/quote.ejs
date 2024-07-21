@@ -13,100 +13,88 @@
       <a href="#" hx-get="/addquote" hx-target="#body" class="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700">
         Add Quote
       </a>
- <% } %>
-   </div>
-<div class="quote-form mx-auto mt-8 p-4 max-w-4xl bg-white rounded-lg shadow-lg">
-        <div class="filter-section flex mb-4 items-center space-x-2">
-            <select id="filterType" class="pl-3 pr-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option value="">Select Filter Type</option>
-                <option value="author">Author</option>
-                <option value="quote">Quote</option>
-                <option value="tags">Tags</option>
-            </select>
-            <div class="relative flex-1">
-                <input type="text" id="searchBar" placeholder="" class="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <button id="searchButton" class="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-12 bg-orange-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600">
-                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 4.35a7.5 7.5 0 010 12.3z" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-<div id="quotesContainer" class="space-y-4">
+  
+  </div>
+   
+  <div class="quote-form mx-auto mt-8 p-4 max-w-6xl bg-white rounded-lg shadow-lg">
+    <div class="filter-section flex mb-4 items-center space-x-2">
+      <select id="filterType" class="pl-3 pr-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="">Select Filter Type</option>
+        <option value="author">Author</option>
+        <option value="quote">Quote</option>
+        <option value="tags">Tags</option>
+      </select>
+      <div class="relative flex-1">
+        <input type="text" id="searchBar" placeholder="Search..." class="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <button id="searchButton" class="absolute inset-y-0 right-0 flex items-center justify-center w-12 h-12 bg-orange-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600">
+          <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1116.65 4.35a7.5 7.5 0 010 12.3z" />
+          </svg>
+        </button>
+      </div>
+      <% } %>
+    </div>
+ 
+    <!-- Quotes Section -->
+    <div id="quotes-section" class="space-y-4">
       <% quotes.forEach(quote => { %>
-        <div class="quote-item bg-gray-100 p-4 mb-2 rounded border border-gray-200 flex justify-between items-center">
-          <p class="text flex-1"><%= quote.text %></p>
-          <p class="author font-bold ml-4 flex-shrink-0"><%= quote.author %></p>
-          <% if (quote.addedByUser) { %>
-            <div class="user-icon bg-cover w-6 h-6 ml-4" style="background-image: url('/images/user_icon.png');"></div>
-          <% } %>
+        <div class="quote-item" data-author="<%= quote.author %>" data-text="<%= quote.text %>" data-tags="<%= quote.tags %>">
+          <%- include('partials/quote', { quote, likedislikecount:likedislikecount }) %>
         </div>
       <% }); %>
+      <p id="no-results" style="display: none;">No results found.</p>
     </div>
   </div>
-<script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const quotes = [
-                { text: "Life is what happens when you're busy making other plans.", author: "John Lennon", tags: ["life", "plans"], addedByUser: true },
-                { text: "The way to get started is to quit talking and begin doing.", author: "Walt Disney", tags: ["motivation", "action"], addedByUser: false },
-                // Add more quotes as needed
-            ];
 
-            const quotesContainer = document.getElementById('quotesContainer');
-            const searchBar = document.getElementById('searchBar');
-            const filterType = document.getElementById('filterType');
-            const searchButton = document.getElementById('searchButton');
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterType = document.getElementById('filterType');
+      const searchBar = document.getElementById('searchBar');
+      const searchButton = document.getElementById('searchButton');
+      const quotesSection = document.getElementById('quotes-section');
+      const noResults = document.getElementById('no-results');
 
-           function displayQuotes(filteredQuotes) {
-            quotesContainer.innerHTML = '';
-            filteredQuotes.forEach(quote => {
-                const quoteItem = document.createElement('div');
-                quoteItem.className = 'quote-item bg-gray-100 p-4 mb-2 rounded border border-gray-200 flex justify-between items-center';
-                quoteItem.innerHTML = `
-                    <p class="text flex-1">${quote.text}</p>
-                    <p class="author font-bold ml-4 flex-shrink-0">${quote.author}</p>
-                    ${quote.addedByUser ? '<div class="user-icon bg-cover w-6 h-6 ml-4" style="background-image: url(\'/images/user_icon.png\');"></div>' : ''}
-                `;
-                quotesContainer.appendChild(quoteItem);
-            });
-        }
+      function filterQuotes() {
+        const filter = filterType.value;
+        const query = searchBar.value.toLowerCase();
 
-            function filterQuotes() {
-                const searchValue = searchBar.value.toLowerCase();
-                const filter = filterType.value;
+        // Fetch all quotes
+        const quotes = Array.from(quotesSection.querySelectorAll('.quote-item'));
 
-                const filteredQuotes = quotes.filter(quote => {
-                    if (filter === "author") {
-                        return quote.author.toLowerCase().includes(searchValue);
-                    } else if (filter === "quote") {
-                        return quote.text.toLowerCase().includes(searchValue);
-                    } else if (filter === "tags") {
-                        return quote.tags.join(' ').toLowerCase().includes(searchValue);
-                    } else {
-                        return quote.author.toLowerCase().includes(searchValue) ||
-                               quote.text.toLowerCase().includes(searchValue) ||
-                               quote.tags.join(' ').toLowerCase().includes(searchValue);
-                    }
-                });
+        let hasVisibleQuotes = false;
 
-                displayQuotes(filteredQuotes);
-            }
+        quotes.forEach(quote => {
+          const author = quote.dataset.author.toLowerCase();
+          const text = quote.dataset.text.toLowerCase();
+          const tags = quote.dataset.tags.toLowerCase();
 
-            searchBar.addEventListener('input', filterQuotes);
-            filterType.addEventListener('change', filterQuotes);
-            searchButton.addEventListener('click', filterQuotes);
+          let shouldDisplay = false;
 
-            // Initial display of quotes
-            displayQuotes(quotes);
+          switch (filter) {
+            case 'author':
+              shouldDisplay = author.includes(query);
+              break;
+            case 'quote':
+              shouldDisplay = text.includes(query);
+              break;
+            case 'tags':
+              shouldDisplay = tags.includes(query);
+              break;
+            default:
+              shouldDisplay = true;
+              break;
+          }
+
+          quote.style.display = shouldDisplay ? 'block' : 'none';
+          if (shouldDisplay) hasVisibleQuotes = true;
         });
-    </script>
- 
-  <div id="quote-form-container"></div>
 
-  <!-- Quotes Section -->
-  <div id="quotes-section" class="space-y-4">
-    <% quotes.forEach(quote => { %>
-      <%- include('partials/quote', { quote, likedislikecount:likedislikecount }) %>
-    <% }); %>
-  </div>
+        noResults.style.display = hasVisibleQuotes ? 'none' : 'block';
+      }
+
+      searchButton.addEventListener('click', filterQuotes);
+      searchBar.addEventListener('input', filterQuotes);
+      filterType.addEventListener('change', filterQuotes);
+    });
+  </script>
 </div>
