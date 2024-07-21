@@ -54,47 +54,42 @@
       const quotesSection = document.getElementById('quotes-section');
       const noResults = document.getElementById('no-results');
 
-      function filterQuotes() {
-        const filter = filterType.value;
-        const query = searchBar.value.toLowerCase();
+            function filterQuotes() {
+                const searchValue = searchBar.value.toLowerCase();
+                const filter = filterType.value;
 
-        // Fetch all quotes
-        const quotes = Array.from(quotesSection.querySelectorAll('.quote-item'));
+                const filteredQuotes = quotes.filter(quote => {
+                    if (filter === "author") {
+                        return quote.author.toLowerCase().includes(searchValue);
+                    } else if (filter === "quote") {
+                        return quote.text.toLowerCase().includes(searchValue);
+                    } else if (filter === "tags") {
+                        return quote.tags.join(' ').toLowerCase().includes(searchValue);
+                    } else {
+                        return quote.author.toLowerCase().includes(searchValue) ||
+                               quote.text.toLowerCase().includes(searchValue) ||
+                               quote.tags.join(' ').toLowerCase().includes(searchValue);
+                    }
+                });
 
-        let hasVisibleQuotes = false;
+                displayQuotes(filteredQuotes);
+            }
 
-        quotes.forEach(quote => {
-          const author = quote.dataset.author.toLowerCase();
-          const text = quote.dataset.text.toLowerCase();
-          const tags = quote.dataset.tags.toLowerCase();
+            searchBar.addEventListener('input', filterQuotes);
+            filterType.addEventListener('change', filterQuotes);
+            searchButton.addEventListener('click', filterQuotes);
 
-          let shouldDisplay = false;
-
-          switch (filter) {
-            case 'author':
-              shouldDisplay = author.includes(query);
-              break;
-            case 'quote':
-              shouldDisplay = text.includes(query);
-              break;
-            case 'tags':
-              shouldDisplay = tags.includes(query);
-              break;
-            default:
-              shouldDisplay = true;
-              break;
-          }
-
-          quote.style.display = shouldDisplay ? 'block' : 'none';
-          if (shouldDisplay) hasVisibleQuotes = true;
+            // Initial display of quotes
+            displayQuotes(quotes);
         });
+    </script>
+ 
+  <div id="quote-form-container"></div>
 
-        noResults.style.display = hasVisibleQuotes ? 'none' : 'block';
-      }
-
-      searchButton.addEventListener('click', filterQuotes);
-      searchBar.addEventListener('input', filterQuotes);
-      filterType.addEventListener('change', filterQuotes);
-    });
-  </script>
+  <!-- Quotes Section -->
+  <div id="quotes-section" class="space-y-4">
+    <% quotes.forEach(quote => { %>
+      <%- include('partials/quote', { quote, likedislikecount:likedislikecount }) %>
+    <% }); %>
+  </div>
 </div>
