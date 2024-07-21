@@ -4,13 +4,26 @@ const quotesCollection = require('../models/quotes.js');
 const quotesreaction = require('../models/quotesreaction.js');
 const { v4: uuidv4 } = require('uuid');
 
-router.get('/allquotereactions', async (req, res) => {
+router.get('/:id/reactions', async (req, res) => {
   try {
-    // Fetch all quote reactions from the database
-    const quotes = await quotesreaction.find();
-    res.json(quotes);
+    // Extract the quote ID from the URL parameters
+    const quoteId = req.params.id;
+
+    // Fetch reactions for the specific quote ID from the database
+    const reactions = await quotesreaction.findOne({ quoteId: quoteId }); // Adjust the query based on your schema
+
+    if (!reactions) {
+      return res.status(404).json({ message: 'Quote reactions not found' });
+    }
+
+    // Return the reactions as JSON
+    res.json(reactions);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    // Log the error for debugging
+    console.error('Error fetching reactions for quote ID:', err);
+
+    // Send an error response with status code 500
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 //1
@@ -211,5 +224,69 @@ router.patch('/:id/dislike/down', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
+// 1. Toggle like
+router.patch('/:id/like/toggle', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sessionuserId = req.session.user.id;
+
+    let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
+    if (!reaction) {
+      reaction = new quotesreaction({
+        _id: uuidv4(),
+        like: true,
+        dislike: false,
+        quoteId: id,
+        userId: sessionuserId,
+      });
+    } else {
+      reaction.like = !reaction.like; // Toggle like state
+      if (reaction.like) {
+        reaction.dislike = false; // Ensure dislike is false if liked
+      }
+    }
+
+    await reaction.save();
+    const likesCount = await quotesreaction.countDocuments({ quoteId: id, like: true });
+    const dislikesCount = await quotesreaction.countDocuments({ quoteId: id, dislike: true });
+    res.json({ status: reaction.like ? "likeup" : "likedown", likesCount, dislikesCount });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// 2. Toggle dislike
+router.patch('/:id/dislike/toggle', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sessionuserId = req.session.user.id;
+
+    let reaction = await quotesreaction.findOne({ quoteId: id, userId: sessionuserId });
+    if (!reaction) {
+      reaction = new quotesreaction({
+        _id: uuidv4(),
+        like: false,
+        dislike: true,
+        quoteId: id,
+        userId: sessionuserId,
+      });
+    } else {
+      reaction.dislike = !reaction.dislike; // Toggle dislike state
+      if (reaction.dislike) {
+        reaction.like = false; // Ensure like is false if disliked
+      }
+    }
+
+    await reaction.save();
+    const likesCount = await quotesreaction.countDocuments({ quoteId: id, like: true });
+    const dislikesCount = await quotesreaction.countDocuments({ quoteId: id, dislike: true });
+    res.json({ status: reaction.dislike ? "dislikeup" : "dislikedown", likesCount, dislikesCount });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 module.exports = router;

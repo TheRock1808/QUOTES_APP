@@ -9,7 +9,7 @@
     <!-- like / dislike -->
     <div class="flex space-x-2">
       <button class="like-btn" 
-        hx-patch="/quotes/<%= quote._id %>/like/up" 
+      hx-patch="/quotes/<%= quote._id %>/like/toggle" 
         hx-target="#quote-<%= quote._id %>-like" 
         hx-swap="innerHTML" 
         aria-label="Like">
@@ -24,7 +24,7 @@
 
       
       <button class="dislike-btn" 
-        hx-patch="/quotes/<%= quote._id %>/dislike/up" 
+      hx-patch="/quotes/<%= quote._id %>/dislike/toggle" 
         hx-target="#quote-<%= quote._id %>-dislike" 
         hx-swap="innerHTML" 
         aria-label="Dislike">
