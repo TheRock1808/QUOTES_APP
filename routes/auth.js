@@ -32,16 +32,18 @@ router.post('/update', async (req, res) => {
           { new: true }
         );
     
-        console.log('Updated User:', updatedUser);
+        // console.log('Updated User:', updatedUser);
     
         if (!updatedUser) {
           return res.status(404).send('User not found');
         }
     
         // Update session initials
+        req.session.user.name = fname + " "+ lname;
         req.session.user.initials = `${fname.charAt(0).toUpperCase()}${lname.charAt(0).toUpperCase()}`;
         
-        res.redirect('/dashboard');
+        res.set('HX-Redirect', '/dashboard').status(200).end();
+
       }
     } catch (error) {
       console.error(error);
