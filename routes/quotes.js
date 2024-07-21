@@ -6,23 +6,18 @@ const { v4: uuidv4 } = require('uuid');
 
 router.get('/:id/reactions', async (req, res) => {
   try {
-    // Extract the quote ID from the URL parameters
     const quoteId = req.params.id;
 
-    // Fetch reactions for the specific quote ID from the database
-    const reactions = await quotesreaction.findOne({ quoteId: quoteId }); // Adjust the query based on your schema
+    const reactions = await quotesreaction.findOne({ quoteId: quoteId }); 
 
     if (!reactions) {
       return res.status(404).json({ message: 'Quote reactions not found' });
     }
 
-    // Return the reactions as JSON
     res.json(reactions);
   } catch (err) {
-    // Log the error for debugging
     console.error('Error fetching reactions for quote ID:', err);
 
-    // Send an error response with status code 500
     res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
@@ -49,8 +44,9 @@ router.get('/', async (req, res) => {     //quotes get
 //2
 router.post('/', async (req, res) => {     //quotes post
     const { quote, author, tags } = req.body; 
+    const addedBy = req.session.user.id;
     try {
-      const newQuote = new quotesCollection({ quote, author, tags });
+      const newQuote = new quotesCollection({ quote, author, tags,addedBy });
   
       // Save the new quote to the database
       await newQuote.save();
