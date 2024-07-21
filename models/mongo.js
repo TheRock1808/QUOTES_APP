@@ -38,6 +38,15 @@ const userlogin = mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    dailyQuote : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'quotes',
+        default : null
+    },
+    dailyQuoteTime : {
+        type : Date,
+        default : null
     }
 });
 

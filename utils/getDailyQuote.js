@@ -1,3 +1,4 @@
+// utils/getDailyQuote.js
 const quotesCollection = require('../models/quotes');
 const quotesReactionCollection = require('../models/quotesreaction');
 
@@ -8,7 +9,13 @@ const getRandomQuote = (quotes) => {
 };
 
 // Function to get the daily quote based on user preferences
-const getDailyQuote = async (userId) => {
+const getDailyQuote = async (userId, currentDailyQuote, currentDailyQuoteTimestamp) => {
+    const today = new Date().setHours(0, 0, 0, 0); // Get today's date at midnight
+
+    if (currentDailyQuote && currentDailyQuoteTimestamp >= today) {
+        return currentDailyQuote; // Return the current daily quote if it is from today
+    }
+
     let dailyQuote = null;
 
     try {
@@ -18,9 +25,7 @@ const getDailyQuote = async (userId) => {
             const likedQuotesList = likedQuotes.map(reaction => reaction.quoteId);
 
             if (likedQuotesList.length > 0) {
-
                 dailyQuote = await quotesCollection.findOne({ _id: { $in: likedQuotesList } });
-                console.log(dailyQuote);
             }
 
             // Fetch user-added quotes if no liked quotes
