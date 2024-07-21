@@ -11,6 +11,8 @@ const quotesreaction = require('./models/quotesreaction.js');
 const Quote = require('./models/quotes.js');
 const app = express();
 const port = 3000;
+require('./cronJobs.js');
+const cronRoutes = require('./routes/cronRoutes.js');
 
 mongoose.connect('mongodb://127.0.0.1:27017/quotesapp', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -19,6 +21,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.json());
+
+app.use('/cron', cronRoutes);
 
 app.use(session({
     secret: 'Thor2024@cc',
