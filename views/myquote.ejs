@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Quotes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/css/tailwind.css">
+  <script src="https://unpkg.com/htmx.org@1.8.5"></script> <!-- Include HTMX -->
+  <style>
+    .tab-border {
+      border-bottom: 2px solid #8a8888;
+    }
+    .tab-active {
+      border-bottom: 2px solid #7e22ce;
+    }
+    .tab:hover {
+      color: #7e22ce;
+    }
+    .navbar {
+      background-color: #8BC34A;
+    }
+    .navbar a {
+      color: black;
+      font-weight: bold;
+      padding: 10px;
+    }
+    .navbar a:hover {
+      background-color: white;
+      border-radius: 4px;
+    }
+    .quote-container {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .quote-content {
+      max-width: 80%;
+    }
+    .quote-actions {
+      display: flex;
+      align-items: center;
+    }
+    .quote-actions button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    .quote-actions button:hover {
+      color: #7e22ce;
+    }
+    .quote-actions .fa {
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body class="flex flex-col items-center justify-center bg-gray-100">
+
+  <div class="container mx-auto">
+    <div class="flex items-center mb-4">
+      <h1 class="text-2xl font-bold mb-8 mt-6">My Quotes</h1>
+      <div class="flex-grow border-t border-gray-200 ml-4"></div>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-5xl">
+      <div class="flex space-x-4">
+        <a class="tab tab-border tab-active px-4 py-2" 
+           href="#" 
+           hx-get="/quotes/added" 
+           hx-target="#quote-list" 
+           hx-swap="innerHTML">
+          Added Quotes <span class="bg-purple-200 text-purple-700 rounded-full px-2">4</span>
+        </a>
+        <a class="tab tab-border px-4 py-2" 
+           href="#" 
+           hx-get="/quotes/liked" 
+           hx-target="#quote-list" 
+           hx-swap="innerHTML">
+          Liked Quotes <span class="bg-purple-200 text-purple-700 rounded-full px-2">1</span>
+        </a>
+        <a class="tab tab-border px-4 py-2" 
+           href="#" 
+           hx-get="/quotes/disliked" 
+           hx-target="#quote-list" 
+           hx-swap="innerHTML">
+          Disliked Quotes <span class="bg-purple-200 text-purple-700 rounded-full px-2">1</span>
+        </a>
+      </div>
+
+      <div id="quote-list" class="mt-4">
+        <!-- Initial content can go here or be dynamically loaded via HTMX -->
+        <div class="quote-content">
+          <p class="text-gray-800">Almost everything will work again if you unplug it for a few minutes, including you</p>
+          <div class="text-right text-blue-600">- Anne Lamott</div>
+          <div class="quote-actions">
+            <button>
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button>
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Repeat for other quotes as needed -->
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
