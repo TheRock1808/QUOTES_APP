@@ -32,6 +32,18 @@
                 </button>
             </div>
         </div>
+<div id="quotesContainer" class="space-y-4">
+      <% quotes.forEach(quote => { %>
+        <div class="quote-item bg-gray-100 p-4 mb-2 rounded border border-gray-200 flex justify-between items-center">
+          <p class="text flex-1"><%= quote.text %></p>
+          <p class="author font-bold ml-4 flex-shrink-0"><%= quote.author %></p>
+          <% if (quote.addedByUser) { %>
+            <div class="user-icon bg-cover w-6 h-6 ml-4" style="background-image: url('/images/user_icon.png');"></div>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+  </div>
 <script>
         document.addEventListener('DOMContentLoaded', () => {
             const quotes = [
@@ -45,19 +57,19 @@
             const filterType = document.getElementById('filterType');
             const searchButton = document.getElementById('searchButton');
 
-            function displayQuotes(filteredQuotes) {
-                quotesContainer.innerHTML = '';
-                filteredQuotes.forEach(quote => {
-                    const quoteItem = document.createElement('div');
-                    quoteItem.className = 'quote-item bg-gray-100 p-4 mb-2 rounded border border-gray-200 flex justify-between items-center';
-                    quoteItem.innerHTML = `
-                        <p class="text flex-1">${quote.text}</p>
-                        <p class="author font-bold ml-4 flex-shrink-0">${quote.author}</p>
-                        ${quote.addedByUser ? '<div class="user-icon" style="background: url(\'path_to_your_icon.png\') no-repeat center center; width: 24px; height: 24px;"></div>' : ''}
-                    `;
-                    quotesContainer.appendChild(quoteItem);
-                });
-            }
+           function displayQuotes(filteredQuotes) {
+            quotesContainer.innerHTML = '';
+            filteredQuotes.forEach(quote => {
+                const quoteItem = document.createElement('div');
+                quoteItem.className = 'quote-item bg-gray-100 p-4 mb-2 rounded border border-gray-200 flex justify-between items-center';
+                quoteItem.innerHTML = `
+                    <p class="text flex-1">${quote.text}</p>
+                    <p class="author font-bold ml-4 flex-shrink-0">${quote.author}</p>
+                    ${quote.addedByUser ? '<div class="user-icon bg-cover w-6 h-6 ml-4" style="background-image: url(\'/images/user_icon.png\');"></div>' : ''}
+                `;
+                quotesContainer.appendChild(quoteItem);
+            });
+        }
 
             function filterQuotes() {
                 const searchValue = searchBar.value.toLowerCase();
