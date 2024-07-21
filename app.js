@@ -39,6 +39,12 @@ const sessionChecker = (req, res, next) => {
 // Routes
 const auth = require('./routes/auth');
 const quotesRouter = require('./routes/quotes');
+const homeRouter = require('./routes/home');
+
+app.use('/home', homeRouter);
+
+
+
 app.use('/auth', auth);
 app.use('/quotes', quotesRouter);
 
@@ -124,9 +130,14 @@ app.get('/addquote', (req, res) => {
     res.render('addQuote');
 });
 
-app.get('/home', (req, res) => {
+app.get('/', (req, res) => {
+        res.render('home');
+});
+
+app.get('home', (req, res) => {
     res.render('home');
 });
+
 
 app.get('/allquote', async (req, res) => {
     try {

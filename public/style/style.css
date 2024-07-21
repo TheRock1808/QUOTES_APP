@@ -679,6 +679,9 @@ video {
 .w-\[700px\] {
   width: 700px;
 }
+.w-\[900px\] {
+  width: 900px;
+}
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
