@@ -20,6 +20,11 @@ const quotesSchema = new mongoose.Schema({
         type: String,
         default: '',
         required: true,
+        
+    },
+    addedBy:{
+        type: String,
+        required: true,
     }
 });
 

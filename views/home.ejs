@@ -1,8 +1,25 @@
-<div class="flex items-center h-[80vh]">
- <div class="mx-auto">
-   <div class="border-2 border-yellow-500 bg-white text-black p-2 rounded-md w-fit h-fit font-bold text-center relative pb-5 italic text-lg">
-     Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab reprehenderit quisquam laborum totam, voluptatem deserunt, amet aspernatur quod ipsum nam numquam facere inventore fugit expedita a officiis quos nulla corrupti!
-     <div class="absolute bottom-2 right-[13.375rem]">-author</div>
-   </div>
- </div>
-</div>
+<!-- views/home.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/style/style.css">
+</head>
+<body>
+    <div class="flex items-center h-[80vh]">
+        <div class="mx-auto">
+            <div class="border-2 border-yellow-500 bg-white text-black p-2 rounded-md w-[900px] h-fit font-bold text-center relative pb-5 italic text-lg">
+
+                <p><%= dailyQuote ? dailyQuote.quote : 'No quote available' %></p>
+                <div class="absolute bottom-2 right-[13.375rem]">
+                     <%= dailyQuote ? `- ${dailyQuote.author}` : '' %> 
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
