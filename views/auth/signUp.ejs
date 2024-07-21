@@ -13,8 +13,6 @@
     padding: 10px; /* Add padding around the text */
     margin-bottom: 10px; /* Add space between error messages */
     color: #721c24; /* Text color (dark red) */
-    background-color: #f8d7da; /* Background color (light red) */
-    border: 1px solid #f5c6cb; /* Border color (lighter red) */
     border-radius: 4px; /* Rounded corners */
   }
 </style>
@@ -67,8 +65,8 @@
           required
           minlength="8"
         />
-        <a class="acc" hx-get="/signIn" hx-target="#body" hx-swap="innerHTML">Already have an account?</a>
       </div>
+      <a class="acc pl-72 cursor-pointer pt-3" hx-get="/signIn" hx-target="#body" hx-swap="innerHTML">Already have an account?</a>
       <div class="flex justify-center px-4 py-3">
         <button
           class="bg-[#b29ed1] px-2 py-2 mx-4 rounded-lg text-white"

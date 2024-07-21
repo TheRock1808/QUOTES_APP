@@ -1,16 +1,22 @@
 <%- include('../partials/header') %>
 <style>
-  .cre{
+  .cre {
     text-decoration-line: underline;
     color: blue;
   }
 
-  .cre:hover{
+  .cre:hover {
     color: rgb(86, 75, 244);
   }
 </style>
 <div class="flex justify-center items-center h-[500px]">
-  <form id="SignIn" hx-post="/auth/signIn" hx-include="[name=email],[name=password]" hx-target="#SignIn" hx-swap="innerHTML">
+  <form
+    id="SignIn"
+    hx-post="/auth/signIn"
+    hx-include="[name=email],[name=password]"
+    hx-target="#SignIn"
+    hx-swap="innerHTML"
+  >
     <div class="bg-white ring-1 w-[400px] ring-slate-400 shadow-xl rounded-md">
       <div class="bg-[#896ab9] text-white py-3 px-3 text-xl rounded-t-md">
         Login
@@ -35,8 +41,14 @@
           minlength="8"
           required
         />
-      <a hx-get="/signUp" hx-target="#body" hx-swap="innerHTML" class="cre">Create New Account</a>
       </div>
+      <a
+      hx-get="/signUp"
+      hx-target="#body"
+      hx-swap="innerHTML"
+      class="cre text-gray-600 hover:text-black pl-56 cursor-pointer"
+      >Create New Account?</a
+    >
       <div class="flex justify-center px-4 py-3">
         <button
           class="bg-[#b29ed1] px-2 py-2 mx-4 rounded-lg text-white justify-end"
@@ -46,7 +58,9 @@
         </button>
         <button
           class="bg-[#d29f3b] px-2 py-2 mx-4 rounded-lg text-white"
-          hx-get="/cancel" hx-target="#body" hx-swap="outerHTML" 
+          hx-get="/cancel"
+          hx-target="#body"
+          hx-swap="outerHTML"
         >
           Cancel
         </button>
