@@ -19,6 +19,8 @@ router.post('/update', async (req, res) => {
       const userId = req.session.user.id;
       const { fname, lname } = req.body;
 
+      console.log(fname, lname, userId);
+
       if(fname == ' ' || lname == ' '){
         console.log('Text not to keep blank')
         // res.status(401).render("auth/signIn", { message: 'Incorrect email or password. Please try again.' });
@@ -32,16 +34,15 @@ router.post('/update', async (req, res) => {
           { new: true }
         );
     
-        console.log('Updated User:', updatedUser);
-    
         if (!updatedUser) {
           return res.status(404).send('User not found');
         }
     
         // Update session initials
         req.session.user.initials = `${fname.charAt(0).toUpperCase()}${lname.charAt(0).toUpperCase()}`;
+        req.session.user.name = fname + " " + lname;
         
-        res.redirect('/dashboard');
+        res.status(201).set('HX-Redirect', '/dashboard').json(updatedUser);
       }
     } catch (error) {
       console.error(error);
