@@ -142,6 +142,12 @@ app.get('/authors/:letter', async (req, res) => {
     }
   });
 
+  app.get('/myquote', (req, res)=>{
+    const userId = req.session.user.id;
+    // console.log(userId);
+    res.render('myquotes', {_id: userId});
+  })
+
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
 });

@@ -41,28 +41,5 @@ const userlogin = mongoose.Schema({
     }
 });
 
-const quotesSchema = new mongoose.Schema({
-    _id: {
-        type: String,
-        default: uuidv4,
-        required:true
-      },
-    quote: {
-        type: String,
-        required: true
-    },
-    author: {
-        type: String,
-        required: true
-    },
-    tags: {
-        type: String,
-        default: '',
-        required: true,
-        
-    }
-});
-
 const users = mongoose.model('users', userlogin);
-
 module.exports = users;
