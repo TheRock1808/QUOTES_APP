@@ -41,11 +41,10 @@ const sessionChecker = (req, res, next) => {
 const auth = require('./routes/auth');
 const quotesRouter = require('./routes/quotes');
 const homeRouter = require('./routes/home');
+const myquotesRouter = require('./routes/myquotes.js');
 
 app.use('/home', homeRouter);
-
-
-
+app.use('/myquotes', myquotesRouter);
 app.use('/auth', auth);
 app.use('/quotes', quotesRouter);
 
@@ -129,6 +128,7 @@ app.get('/likedislikecount',async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
 app.get('/addquote', (req, res) => {
     res.render('addQuote');
 });
@@ -161,15 +161,7 @@ app.get('/allquote', async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
-app.get('/myquote', async (req, res) => {
 
-        if (req.session.user) {
-            res.render('myquote');
-        } else {
-            res.redirect('/signIn');
-        }
-
-});
 app.get('/authors', async (req, res) => {
     try {
         const authors = await quotesCollection.distinct('author');
@@ -199,12 +191,11 @@ app.get('/authors/:letter', async (req, res) => {
     }
   });
 
-  app.get('/myquote', (req, res)=>{
-    const userId = req.session.user.id;
-    // console.log(userId);
-    res.render('myquotes', {_id: userId});
-  })
-
+  app.get('/myquote', async (req, res) => {
+    const user = req.session.user;
+    res.render('myquote', { user });
+  });  
+  
 app.get('/search', async (req, res) => {
     try {
       const { filter, search } = req.query;

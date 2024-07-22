@@ -44,7 +44,8 @@ router.get('/', async (req, res) => {     //quotes get
 //2
 router.post('/', async (req, res) => {     //quotes post
     const { quote, author, tags } = req.body; 
-    const addedBy = req.session.user.id;
+    const user = req.session.user;
+    const addedBy = user._id;
     try {
       const newQuote = new quotesCollection({ quote, author, tags,addedBy });
   
