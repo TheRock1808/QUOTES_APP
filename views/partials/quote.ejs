@@ -1,8 +1,10 @@
+<!-- views/partials/quote.ejs -->
 <div class="border-2 border-yellow-600 rounded-md p-4 relative bg-white shadow-md">
   <p class="mb-4 text-gray-800"><%= quote.quote %></p>
   <div class="absolute bottom-2 right-3 bg-blue-600 text-white px-2 py-1 rounded-md">
     - <%= quote.author %>
   </div>
+
   <% if (user) { %>
     <!-- User Icon if added by current user -->
     <% if (quote.addedBy && quote.addedBy === user.id) { %>
@@ -11,33 +13,70 @@
       </div>
     <% } %>
 
-    <!-- like / dislike -->
-    <div class="flex space-x-2">
-      <button class="like-btn" 
-              hx-patch="/quotes/<%= quote._id %>/like/toggle" 
-              hx-target="#quote-<%= quote._id %>-like" 
-              hx-swap="innerHTML" 
-              aria-label="Like">
-        <svg class="h-8 w-8 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
-        </svg>
-        <span class="text-green-400 like-count" id="quote-<%= quote._id %>-like">
-          <%= (likedislikecount[quote._id] && likedislikecount[quote._id].likeCount) || 0 %>
-        </span>
-      </button>
+    <!-- Like / Dislike Buttons and Lists -->
+    <div class="flex space-x-2 relative">
+      <!-- Like Button -->
+      <div class="relative group">
+        <button class="like-btn" 
+          hx-patch="/quotes/<%= quote._id %>/like/toggle" 
+          hx-target="#quote-<%= quote._id %>-like" 
+          hx-swap="innerHTML" 
+          aria-label="Like">
+          <svg class="h-8 w-8 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
+          </svg>
+          <span class="text-green-400 like-count" 
+            id="quote-<%= quote._id %>-like">
+            <%= (likedislikecount[quote._id] && likedislikecount[quote._id].likeCount) || 0 %>
+          </span>
+        </button>
+       <!-- List of users who liked -->
+<div class="absolute bg-white border border-gray-300 p-4 rounded-lg shadow-lg left-0 top-full hidden group-hover:block z-10 w-72 max-h-60 overflow-auto transition-all duration-300 ease-in-out">
+  <h4 class="font-semibold text-lg mb-2 text-gray-800">People who reacted</h4>
+  <ul class="list-disc list-inside text-sm">
+    <% quotereaction.filter(r => r.quoteId === quote._id && r.like).forEach(reaction => { %>
+      <% const user = allusers.find(user => user._id === reaction.userId); %>
+      <% if (user) { %>
+        <li><%= user.fname %> <%= user.lname %></li>
+      <% } else { %>
+        <li>User not found</li>
+      <% } %>
+    <% }) %>
+  </ul>
+</div>
 
-      <button class="dislike-btn" 
-              hx-patch="/quotes/<%= quote._id %>/dislike/toggle" 
-              hx-target="#quote-<%= quote._id %>-dislike" 
-              hx-swap="innerHTML" 
-              aria-label="Dislike">
-        <svg class="h-8 w-8 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
-        </svg>
-        <span class="text-red-400 dislike-count" id="quote-<%= quote._id %>-dislike">
-          <%= (likedislikecount[quote._id] && likedislikecount[quote._id].dislikeCount) || 0 %>
-        </span>
-      </button>
+      </div>
+
+      <!-- Dislike Button -->
+      <div class="relative group">
+        <button class="dislike-btn" 
+          hx-patch="/quotes/<%= quote._id %>/dislike/toggle" 
+          hx-target="#quote-<%= quote._id %>-dislike" 
+          hx-swap="innerHTML" 
+          aria-label="Dislike">
+          <svg class="h-8 w-8 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17" />
+          </svg>
+          <span class="text-red-400 dislike-count" 
+            id="quote-<%= quote._id %>-dislike">
+            <%= (likedislikecount[quote._id] && likedislikecount[quote._id].dislikeCount) || 0 %>
+          </span>
+        </button>
+        <!-- List of users who disliked -->
+        <div class="absolute bg-white border border-gray-300 p-4 rounded-lg shadow-lg left-0 top-full hidden group-hover:block z-10 w-72 max-h-60 overflow-auto transition-all duration-300 ease-in-out">
+          <h4 class="font-semibold text-lg mb-2 text-gray-800">People who reacted</h4>
+          <ul class="list-disc list-inside text-sm">
+            <% quotereaction.filter(r => r.quoteId === quote._id && r.dislike).forEach(reaction => { %>
+              <% const user = allusers.find(user => user._id === reaction.userId); %>
+              <% if (user) { %>
+                <li><%= user.fname %> <%= user.lname %></li>
+              <% } else { %>
+                <li>User not found</li>
+              <% } %>
+            <% }) %>
+          </ul>
+        </div>
+      </div>
     </div>
   <% } %>
 
@@ -50,7 +89,7 @@
     </div>
   <% } %>
 </div>
-
+<% if (user) { %>
 <script>
   document.addEventListener('htmx:afterOnLoad', function (event) {
     try {
@@ -78,3 +117,4 @@
     }
   });
 </script>
+<% } %>

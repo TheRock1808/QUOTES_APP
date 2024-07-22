@@ -14,13 +14,18 @@
     id="SignIn"
     hx-post="/auth/signIn"
     hx-include="[name=email],[name=password]"
-    hx-target="#SignIn"
+    hx-target="#messageContainer"
     hx-swap="innerHTML"
   >
+  <div id="messageContainer" class="text-center py-2">
     <div class="bg-white ring-1 w-[400px] ring-slate-400 shadow-xl rounded-md">
       <div class="bg-[#896ab9] text-white py-3 px-3 text-xl rounded-t-md">
         Login
       </div>
+      <div class="bg-red-100 border border-red-400 text-red-700  rounded relative shadow-md">
+        <%= message %>
+      
+    </div>
       <div class="py-2 px-4">
         E-Mail
         <input
@@ -53,6 +58,7 @@
         <button
           class="bg-[#b29ed1] px-2 py-2 mx-4 rounded-lg text-white justify-end"
           value="login"
+          type="submit"
         >
           Login
         </button>
@@ -60,11 +66,13 @@
           class="bg-[#d29f3b] px-2 py-2 mx-4 rounded-lg text-white"
           hx-get="/cancel"
           hx-target="#body"
-          hx-swap="outerHTML"
+          hx-swap="innerHTML"
         >
           Cancel
         </button>
       </div>
+     
+    </div>
     </div>
   </form>
 </div>

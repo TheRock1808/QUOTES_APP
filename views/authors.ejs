@@ -6,7 +6,6 @@
     <title>Authors</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-
         #author-list label {
             font-weight: bold;
             color: black;
@@ -44,73 +43,71 @@
 </head>
 <body class="h-auto">
     <div class="flex flex-col items-center justify-center bg-gray-100">
-    <h1 class="text-2xl font-bold mb-4 mt-6">Authors</h1>
-    <div class="bg-white p-6 rounded-lg shadow-md w-full h-auto max-w-5xl flex">
-        <div class="flex-grow">
-            <form hx-get="/quotes" hx-target="body" hx-include="[name=author]" hx-swap="none">
-                <div class="mb-4">
-                    <div class="relative">
-                        <input type="text" id="search" placeholder="Type author name" onkeyup="filterAuthors()"
-                            class="w-full p-3 pl-12 pr-4 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M12.9 14.32a8 8 0 111.414-1.414l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387zm-5.9-5.32a6 6 0 1112 0 6 6 0 01-12 0z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+        <h1 class="text-2xl font-bold mb-4 mt-6">Authors</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md w-full  max-w-5xl flex h-[calc(100vh-10rem)] overflow-y-auto">
+            <div class="flex-grow">
+                <form hx-get="/quotes" hx-target="body" hx-include="[name=author]" hx-swap="none">
+                    <div class="mb-4">
+                        <div class="relative">
+                            <input type="text" id="search" placeholder="Type author name" onkeyup="filterAuthors()"
+                                class="w-full p-3 pl-12 pr-4 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-[900px] pointer-events-none">
+                                <svg class="h-8 w-8 text-black"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <circle cx="11" cy="11" r="8" />  <line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex flex-col w-24">
-                    <div id="author-list-container">
-                        <ul id="author-list" class="space-y-2">
-                            <% let currentLetter = ''; %>
-                            <% authors.forEach(author => { %>
-                                <% if (author[0].toUpperCase() !== currentLetter) { %>
-                                    <% currentLetter = author[0].toUpperCase(); %>
-                                    <li class="alphabet-section text-2xl font-bold"><%= currentLetter %></li>
-                                <% } %>
-                                <li class="flex items-center">
-                                    <input type="radio" name="author" value="<%= author %>" id="<%= author %>" class="mr-2">
-                                    <label for="<%= author %>" class="text-lg"><%= author %></label>
-                                </li>
-                            <% }); %>
-                        </ul>
+                    <div class="flex flex-col w-80 ">
+                        <div id="author-list-container">
+                            <ul id="author-list" class="space-y-2">
+                                <% let currentLetter = ''; %>
+                                <% authors.forEach(author => { %>
+                                    <% if (author[0].toUpperCase() !== currentLetter) { %>
+                                        <% currentLetter = author[0].toUpperCase(); %>
+                                        <li class="alphabet-section text-2xl font-bold"><%= currentLetter %></li>
+                                    <% } %>
+                                    <li class="flex items-center">
+                                        <input type="radio" name="author" value="<%= author %>" id="<%= author %>" class="mr-2">
+                                        <label for="<%= author %>" class="text-lg"><%= author %></label>
+                                    </li>
+                                <% }); %>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <button type="submit" value="quote" class="mt-4 w-full py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">View Quotes</button>
-            </form>
-        </div>
-        <div class="alphabet-sidebar flex flex-col items-center">
-            <a href="#" class="alphabet-link text-lime-600 mb-2 p-2" onclick="filterByAlphabet(event, 'a')">A</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'b')">B</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'c')">C</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'd')">D</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'e')">E</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'f')">F</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'g')">G</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'h')">H</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'i')">I</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'j')">J</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'k')">K</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'l')">L</a>
-            <a href="#" class="alphabet-link text-lime-600 mb-2 p-2" onclick="filterByAlphabet(event, 'm')">M</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'n')">N</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'o')">O</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'p')">P</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'q')">Q</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'r')">R</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 's')">S</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 't')">T</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'u')">U</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'v')">V</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'w')">W</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'x')">X</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'y')">Y</a>
-            <a href="#" class="alphabet-link text-zinc-400 mb-2 p-2" onclick="filterByAlphabet(event, 'z')">Z</a>
+                    <a href="/dashboard" class="mt-12 w-full py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        View Quote
+                    </a>
+            </div>
+            <div class="alphabet-sidebar flex flex-col items-center">
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'a')">A</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'b')">B</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'c')">C</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'd')">D</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'e')">E</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'f')">F</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'g')">G</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'h')">H</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'i')">I</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'j')">J</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'k')">K</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'l')">L</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'm')">M</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'n')">N</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'o')">O</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'p')">P</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'q')">Q</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'r')">R</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 's')">S</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 't')">T</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'u')">U</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'v')">V</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'w')">W</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'x')">X</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'y')">Y</a>
+                <a href="#" class="alphabet-link text-zinc-400 hover:text-white hover:bg-lime-600 hover:rounded-full hover:shadow-lg hover:scale-110 hover:translate-x-[-10%] transition-transform p-2" onclick="filterByAlphabet(event, 'z')">Z</a>
+            </div>
+            </div>
         </div>
     </div>
-</div>
     <script>
         function filterAuthors() {
             const searchInput = document.getElementById('search').value.toLowerCase();

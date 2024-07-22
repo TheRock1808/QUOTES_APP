@@ -21,7 +21,7 @@ async function handleUserSignup(req, res) {
             {
                 const existingUser = await users.findOne({ email });
                 if (existingUser) {
-                    return res.status(409).render('auth/signUp', { message: 'User already exists' });
+                    return res.render('auth/signUp', { message: 'User already exists' });
                 }
 
                 const hashedPassword = await bcrypt.hash(password, 10);
