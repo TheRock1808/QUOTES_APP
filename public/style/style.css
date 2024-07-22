@@ -655,6 +655,9 @@ video {
 .h-\[80vh\] {
   height: 80vh;
 }
+.h-\[calc\(100vh-10rem\)\] {
+  height: calc(100vh - 10rem);
+}
 .h-\[calc\(100vh-4rem\)\] {
   height: calc(100vh - 4rem);
 }
@@ -680,9 +683,6 @@ video {
 .w-16 {
   width: 4rem;
 }
-.w-24 {
-  width: 6rem;
-}
 .w-36 {
   width: 9rem;
 }
@@ -694,6 +694,9 @@ video {
 }
 .w-8 {
   width: 2rem;
+}
+.w-80 {
+  width: 20rem;
 }
 .w-\[400px\] {
   width: 400px;
