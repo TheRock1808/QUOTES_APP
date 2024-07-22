@@ -54,4 +54,21 @@ router.post('/update', async (req, res) => {
 router.post('/signup', handleUserSignup);
 router.post('/signin', handleUserSignin);
 
+
+router.get('/allusers', async (req, res) => {
+  try {
+    const users = await User.find({}); // Fetch all users
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: 'No users found' });
+    }
+
+    res.json(users);
+  } catch (err) {
+    console.error('Error fetching users:', err);
+
+    res.status(500).json({ message: 'Internal server error', error: err.message });
+  }
+});
+
 module.exports = router;

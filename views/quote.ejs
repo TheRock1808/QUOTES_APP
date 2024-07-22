@@ -39,7 +39,7 @@
     <div id="quotes-section" class="space-y-4">
       <% quotes.forEach(quote => { %>
         <div class="quote-item" data-author="<%= quote.author %>" data-text="<%= quote.text %>" data-tags="<%= quote.tags %>">
-          <%- include('partials/quote', { quote, likedislikecount:likedislikecount }) %>
+          <%- include('partials/quote', { quote, likedislikecount:likedislikecount, quotereaction ,allusers }) %>
         </div>
       <% }); %>
       <p id="no-results" style="display: none;">No results found.</p>

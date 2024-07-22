@@ -75,7 +75,7 @@ app.get('/signIn', sessionChecker, (req, res) => {
 app.get('/cancel', async (req, res) => {
     const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
     const quotes = response.data;
-    res.render('allquote', { user: req.session.user, quotes });
+    res.render('allquote', { quotes , user:"", likedislikecount:"", quotereaction:"", allusers:""});
 });
 
 app.get('/update', (req, res) => {
@@ -84,22 +84,36 @@ app.get('/update', (req, res) => {
 
 app.get('/dashboard', async (req, res) => {
     try {
-        const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
-        const quotes = response.data;
-        
-        const response2 = await axios.get('http://localhost:3000/likedislikecount'); // Fetch quotes using the quotes router
-        const likedislikecount = response2.data.reduce((acc, item) => {
+        const response = await axios.get('http://localhost:3000/quotes'); 
+        const quotes = response.data || "";
+    
+        const response3 = await axios.get('http://localhost:3000/quotes/reactions'); 
+        const quotereaction = response3.data || "";
+    
+        const response4 = await axios.get('http://localhost:3000/auth/allusers'); 
+        const allusers = response4.data || "";
+    
+        const response2 = await axios.get('http://localhost:3000/likedislikecount'); 
+        const likedislikecount = (response2.data || "").reduce((acc, item) => {
             acc[item._id] = item;
             return acc;
         }, {});
+    
         if (req.session.user) {
-            res.render('dashboard', { user: req.session.user, quotes, likedislikecount:likedislikecount });
+            res.render('dashboard', { 
+                user: req.session.user, 
+                quotes, 
+                likedislikecount, 
+                quotereaction, 
+                allusers 
+            });
         } else {
             res.redirect('/');
         }
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
+    
 });
 
 app.get('/likedislikecount',async (req, res) => {
@@ -146,14 +160,19 @@ app.get('/allquote', async (req, res) => {
     try {
         const response = await axios.get('http://localhost:3000/quotes'); 
         const quotes = response.data;
-
+        const response3 = await axios.get('http://localhost:3000/quotes/reactions'); 
+        const quotereaction = response3.data;
+        const response4 = await axios.get('http://localhost:3000/auth/allusers'); 
+        const allusers  = response4.data;
         const response2 = await axios.get('http://localhost:3000/likedislikecount'); 
         const likedislikecount = response2.data.reduce((acc, item) => {
             acc[item._id] = item;
             return acc;
         }, {});
+
+     
         if (req.session.user) {
-            res.render('allquote', { user: req.session.user, quotes,likedislikecount });
+            res.render('allquote', { user: req.session.user, quotes,likedislikecount , quotereaction, allusers});
         } else {
             res.redirect('/signIn');
         }
@@ -205,35 +224,7 @@ app.get('/authors/:letter', async (req, res) => {
     res.render('myquotes', {_id: userId});
   })
 
-app.get('/search', async (req, res) => {
-    try {
-      const { filter, search } = req.query;
-      const query = {};
-  
-      if (search) {
-        const searchRegex = new RegExp(search, 'i');
-        if (filter === 'author') {
-          query.author = searchRegex;
-        } else if (filter === 'quote') {
-          query.text = searchRegex;
-        } else if (filter === 'tags') {
-          query.tags = searchRegex;
-        } else {
-          query.$or = [
-            { author: searchRegex },
-            { text: searchRegex },
-            { tags: searchRegex },
-          ];
-        }
-      }
-  
-      const quotes = await Quote.find(query);
-      console.log(quotes); // Log the quotes to verify structure
-      res.json(quotes);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  });
+
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);

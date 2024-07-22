@@ -4,23 +4,22 @@ const quotesCollection = require('../models/quotes.js');
 const quotesreaction = require('../models/quotesreaction.js');
 const { v4: uuidv4 } = require('uuid');
 
-router.get('/:id/reactions', async (req, res) => {
+router.get('/reactions', async (req, res) => {
   try {
-    const quoteId = req.params.id;
+    const reactions = await quotesreaction.find({}); // Fetch all reactions
 
-    const reactions = await quotesreaction.findOne({ quoteId: quoteId }); 
-
-    if (!reactions) {
-      return res.status(404).json({ message: 'Quote reactions not found' });
-    }
+    // if (!reactions || reactions.length === 0) {
+    //   return res.status(200).json({ message: 'No quote reactions found' });
+    // }
 
     res.json(reactions);
   } catch (err) {
-    console.error('Error fetching reactions for quote ID:', err);
+    console.error('Error fetching reactions for all quotes:', err);
 
     res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
+
 //1
 router.get('/', async (req, res) => {     //quotes get
   const { quote, author } = req.query;
