@@ -89,7 +89,7 @@
     </div>
   <% } %>
 </div>
-
+<% if (user) { %>
 <script>
   document.addEventListener('htmx:afterOnLoad', function (event) {
       try {
@@ -116,3 +116,4 @@
       }
   });
 </script>
+<% } %>

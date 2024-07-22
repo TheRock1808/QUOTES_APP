@@ -21,7 +21,8 @@ async function handleUserSignin(req, res) {
                 res.status(201).set('HX-Redirect', '/dashboard').json(user);
             } else {
                 console.log('User not found');
-                res.status(401).render("auth/signIn", { message: 'Incorrect email or password. Please try again.' });
+                return res.render('auth/signIn', { message: 'Incorrect email or password. Please try again.' });
+                // res.status(401).render("auth/signIn", { message: 'Incorrect email or password. Please try again.' });
             }
         } catch (error) {
             console.log('Error occurred:', error);

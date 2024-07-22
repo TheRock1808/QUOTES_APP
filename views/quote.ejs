@@ -46,6 +46,7 @@
     </div>
   </div>
 
+  <% if (user) { %>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const filterType = document.getElementById('filterType');
@@ -97,4 +98,5 @@
       filterType.addEventListener('change', filterQuotes);
     });
   </script>
+    <% } %>
 </div>

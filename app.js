@@ -69,7 +69,7 @@ app.get('/signUp', sessionChecker, (req, res) => {
 });
 
 app.get('/signIn', sessionChecker, (req, res) => {
-    res.render('auth/signIn');
+    res.render('auth/signIn', {message:""});
 });
 
 app.get('/cancel', async (req, res) => {
