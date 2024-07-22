@@ -9,10 +9,12 @@ const users = require('./models/mongo.js');
 const quotesCollection = require('./models/quotes.js');
 const quotesreaction = require('./models/quotesreaction.js');
 const Quote = require('./models/quotes.js');
+const rateLimit = require('express-rate-limit');
 const app = express();
 const port = 3000;
 require('./cronJobs.js');
 const cronRoutes = require('./routes/cronRoutes.js');
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/quotesapp', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -22,7 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(express.json());
 
-app.use('/cron', cronRoutes);
 
 app.use(session({
     secret: 'Thor2024@cc',
@@ -41,17 +42,19 @@ const sessionChecker = (req, res, next) => {
     }
 };
 
+app.use('/cron', cronRoutes);
+
 // Routes
 const auth = require('./routes/auth');
 const quotesRouter = require('./routes/quotes');
 const homeRouter = require('./routes/home');
 
 app.use('/home', homeRouter);
-
-
-
 app.use('/auth', auth);
 app.use('/quotes', quotesRouter);
+
+const {checkLoginLimit} = require('./ratelimiter.js');
+app.use('/quotes', checkLoginLimit, quotesRouter);
 
 app.get('/', async (req, res) => {
     try {
@@ -231,6 +234,11 @@ app.get('/search', async (req, res) => {
     }
   });
 
+  app.get('/limit-exceeded' , (req , res) => {
+    res.render('limitExceeded');
+  });
+
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
 });
+

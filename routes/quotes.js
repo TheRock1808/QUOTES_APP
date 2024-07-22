@@ -4,6 +4,8 @@ const quotesCollection = require('../models/quotes.js');
 const quotesreaction = require('../models/quotesreaction.js');
 const { v4: uuidv4 } = require('uuid');
 
+const { quoteRateLimiter } = require('../ratelimiter.js');
+
 router.get('/:id/reactions', async (req, res) => {
   try {
     const quoteId = req.params.id;
@@ -21,6 +23,8 @@ router.get('/:id/reactions', async (req, res) => {
     res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
+
+
 //1
 router.get('/', async (req, res) => {     //quotes get
   const { quote, author } = req.query;
@@ -285,4 +289,19 @@ router.patch('/:id/dislike/toggle', async (req, res) => {
 });
 
 
+router.use((req, res, next) => {
+  // Apply rate limiter check here if necessary
+  next();
+});
+
+router.get('/', async (req, res) => {
+  // Check if user has crossed the rate limit
+  // This depends on how you track the limit, adjust as needed
+  if (req.rateLimit && req.rateLimit.remaining === 0) {
+      res.render('ratelimit');
+  } else {
+      // Normal quotes page rendering
+      // Add your code to fetch and display quotes here
+  }
+});
 module.exports = router;

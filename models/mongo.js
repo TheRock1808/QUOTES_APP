@@ -47,7 +47,11 @@ const userlogin = mongoose.Schema({
     dailyQuoteTime : {
         type : Date,
         default : null
-    }
+    },
+    loginCount : {
+        type : Number,
+        default : 1
+    },
 });
 
 const quotesSchema = new mongoose.Schema({

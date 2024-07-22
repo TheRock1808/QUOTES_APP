@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const Quote = require('./models/quotes');
 const QuoteReaction = require('./models/quotesreaction');
-
+const users = require("./models/mongo");
 const updateQuoteLikesDislikes = async () => {
     try {
         console.log('Starting to update quotes likes and dislikes');
@@ -30,12 +30,29 @@ const updateQuoteLikesDislikes = async () => {
     }
 };
 
+// Function to reset login count
+const resetLoginCount = async () => {
+    try {
+        await users.updateMany({}, { $set: { loginCount: 0 } });
+        console.log('Login count reset successfully');
+    } catch (err) {
+        console.error('Error resetting login count:', err);
+    }
+};
+
 // Schedule the cron job to run daily at midnight
 cron.schedule('0 0 * * *', updateQuoteLikesDislikes, {
     scheduled: true,
     timezone: "Asia/Kolkata"
 });
 
-console.log('Cron job scheduled to update quotes likes and dislikes daily');
+// Schedule the cron job to reset login count daily at midnight
+cron.schedule('0 0 * * *', resetLoginCount, {
+    scheduled: true,
+    timezone: "Asia/Kolkata"
+});
 
-module.exports = { updateQuoteLikesDislikes };
+console.log('Cron jobs scheduled to update quotes likes/dislikes and reset login count daily');
+
+module.exports = { updateQuoteLikesDislikes, resetLoginCount };
+
