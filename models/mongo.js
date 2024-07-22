@@ -27,26 +27,10 @@ const userlogin = mongoose.Schema({
         unique: true,
         required: true,
         lowercase: true, 
-        // validate: {
-        //     validator: function(value) {
-        //         // Regular expression to validate email format
-        //         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        //     },
-        //     message: 'Invalid email format' // Error message if validation fails
-        // }
     },
     password: {
         type: String,
         required: true,
-    },
-    dailyQuote : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'quotes',
-        default : null
-    },
-    dailyQuoteTime : {
-        type : Date,
-        default : null
     }
 });
 

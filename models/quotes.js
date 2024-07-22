@@ -22,7 +22,17 @@ const quotesSchema = new mongoose.Schema({
         required: true,
         
     },
-    addedBy:{
+    totallike: {
+        type: Number,
+        default: 0,
+        required: true,
+    },
+    totaldislike:{
+        type: Number,
+        default: 0,
+        required: true,
+    },
+    userId:{
         type: String,
         required: true,
     }

@@ -43,9 +43,9 @@ router.get('/', async (req, res) => {     //quotes get
 //2
 router.post('/', async (req, res) => {     //quotes post
     const { quote, author, tags } = req.body; 
-    const addedBy = req.session.user.id;
+    const userId = req.session.user.id;
     try {
-      const newQuote = new quotesCollection({ quote, author, tags,addedBy });
+      const newQuote = new quotesCollection({ quote, author, tags,userId });
   
       // Save the new quote to the database
       await newQuote.save();
