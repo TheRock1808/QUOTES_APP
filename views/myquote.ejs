@@ -24,7 +24,7 @@
       padding: 16px;
       position: relative;
       background-color: #ffffff;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
       margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
@@ -111,7 +111,7 @@
               const quoteElement = document.createElement('div');
               quoteElement.classList.add('quote-container');
               quoteElement.innerHTML = `
-                <div class="border-2 border-gray-600 mt-3 rounded-md p-4 relative bg-white shadow-md">
+                <div class="border-2 border-yellow-600 mt-3 rounded-md p-4 relative bg-white shadow-md">
                     <p class="mb-4 text-gray-800">${quote.quote}</p>
                   <div class="absolute bottom-2 right-3 bg-blue-600 text-white px-2 py-1 rounded-md">
                     - ${quote.author}
