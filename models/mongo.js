@@ -31,6 +31,44 @@ const userlogin = mongoose.Schema({
     password: {
         type: String,
         required: true,
+<<<<<<< HEAD
+=======
+    },
+    dailyQuote : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'quotes',
+        default : null
+    },
+    dailyQuoteTime : {
+        type : Date,
+        default : null
+    },
+    loginCount : {
+        type : Number,
+        default : 1
+    },
+});
+
+const quotesSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: uuidv4,
+        required:true
+      },
+    quote: {
+        type: String,
+        required: true
+    },
+    author: {
+        type: String,
+        required: true
+    },
+    tags: {
+        type: String,
+        default: '',
+        required: true,
+        
+>>>>>>> quotes
     }
 });
 

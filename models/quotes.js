@@ -35,7 +35,18 @@ const quotesSchema = new mongoose.Schema({
     userId:{
         type: String,
         required: true,
-    }
+    },
+    totallike:{
+        type: Number,
+        default: 0
+    },
+    totaldislike:{
+        type: Number,
+        default: 0
+    } ,
+    userId: 
+    { type: mongoose.Schema.Types.ObjectId,
+    ref: 'User' }
 });
 
 
