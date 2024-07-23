@@ -214,18 +214,10 @@ app.get('/authors/:letter', async (req, res) => {
     }
   });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 735cb6e59dd8b83cfe07c4a49c4c8b8a3b7b8214
-  app.get('/myquote', async (req, res) => {
+app.get('/myquote', async (req, res) => {
     const user = req.session.user;
     res.render('myquote', { user });
   });  
-<<<<<<< HEAD
-=======
-
->>>>>>> 735cb6e59dd8b83cfe07c4a49c4c8b8a3b7b8214
 
 
 
