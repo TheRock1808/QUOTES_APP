@@ -3,7 +3,8 @@
   <%- include('partials/header') %>
   <%- include('nav_after') %>
   <div id="body" class="container mx-auto p-4">
-      <%- include('quote', { quotes: quotes, user: user, likedislikecount:likedislikecount, quotereaction , allusers}) %>
+    <%- include('quote', { quotes: quotes, user: user, likedislikecount: likedislikecount, quotereaction: quotereaction, allusers: allusers, currentPage: currentPage }) %>
+       
   </div>
   <%- include('partials/footer') %>
 

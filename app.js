@@ -44,9 +44,9 @@ const homeRouter = require('./routes/home');
 const myquotesRouter = require('./routes/myquotes.js');
 
 app.use('/home', homeRouter);
+app.use('/quotes', quotesRouter);
 app.use('/myquotes', myquotesRouter);
 app.use('/auth', auth);
-app.use('/quotes', quotesRouter);
 
 app.get('/', async (req, res) => {
     try {
@@ -104,7 +104,8 @@ app.get('/dashboard', async (req, res) => {
                 quotes, 
                 likedislikecount, 
                 quotereaction, 
-                allusers 
+                allusers ,
+                currentPage: '/dashboard' 
             });
         } else {
             res.redirect('/');
@@ -172,7 +173,7 @@ app.get('/allquote', async (req, res) => {
 
      
         if (req.session.user) {
-            res.render('allquote', { user: req.session.user, quotes,likedislikecount , quotereaction, allusers});
+            res.render('allquote', { user: req.session.user, quotes,likedislikecount , quotereaction, allusers,currentPage: '/dashboard'});
         } else {
             res.redirect('/signIn');
         }
@@ -210,11 +211,11 @@ app.get('/authors/:letter', async (req, res) => {
     }
   });
 
-  app.get('/myquote', (req, res)=>{
-    const userId = req.session.user.id;
-    // console.log(userId);
-    res.render('myquotes', {_id: userId});
-  })
+
+  app.get('/myquote', async (req, res) => {
+    const user = req.session.user;
+    res.render('myquote', { user });
+  });  
 
 
 
