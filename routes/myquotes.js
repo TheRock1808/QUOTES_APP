@@ -38,11 +38,11 @@ router.get('/users/:id/quotes', async (req, res) => {
 router.get('/users/:id/dislikedquotes', async (req, res) => {
   try {
     const id = req.params.id;
-    
-    const quotesReactions = await quotesReaction.find({ userId: id, disliked: true });
+    // console.log(id)
+    const quotesReactions = await quotesReaction.find({ userId: id, dislike: true });
 
     const quoteIds = quotesReactions.map(reaction => reaction.quoteId);
-    console.log(quoteIds);
+    // console.log("this is quotesid" + quoteIds);
 
     const quotes = await quotesCollection.find({ _id: { $in: quoteIds } });
 
@@ -53,23 +53,21 @@ router.get('/users/:id/dislikedquotes', async (req, res) => {
   }
 });
 
-// // Endpoint to fetch quotes disliked by a user
-// app.get('/users/:id/unfavouritequotes', (req, res) => {
-//   const { id } = req.params;
-//   const quotes = mockData.dislikes
-//     .filter(dislike => dislike.userId == id)
-//     .map(dislike => mockData.quotes.find(quote => quote.id == dislike.quoteId));
-//   res.json(quotes);
-// });
+router.get('/users/:id/likedquotes', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const quotesReactions = await quotesReaction.find({ userId: id, like: true });
 
-// // Endpoint to fetch quotes liked by a user
-// app.get('/users/:id/favourite-quotes', (req, res) => {
-//   const { id } = req.params;
-//   const quotes = mockData.likes
-//     .filter(like => like.userId == id)
-//     .map(like => mockData.quotes.find(quote => quote.id == like.quoteId));
-//   res.json(quotes);
-// });
+    const quoteIds = quotesReactions.map(reaction => reaction.quoteId);
+
+    const quotes = await quotesCollection.find({ _id: { $in: quoteIds } });
+
+    res.status(200).json(quotes);
+  } catch (err) {
+    console.error('Error fetching quotes:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // // Endpoint to fetch all authors
 // app.get('/authors', (req, res) => {

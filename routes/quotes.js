@@ -1,4 +1,5 @@
 const express = require('express');
+// const session = require('express-session');
 const router = express.Router();
 const quotesCollection = require('../models/quotes.js');
 const quotesreaction = require('../models/quotesreaction.js');
@@ -43,9 +44,12 @@ router.get('/', async (req, res) => {     //quotes get
 //2
 router.post('/', async (req, res) => {     //quotes post
     const { quote, author, tags } = req.body; 
-    const addedBy = req.session.user._id;
+    // console.log(req.session.user.id)
+    const totallike = 0;
+    const totaldislike = 0;
+    const addedBy = req.session.user.id;
     try {
-      const newQuote = new quotesCollection({ quote, author, tags, addedBy });
+      const newQuote = new quotesCollection({ quote, author, tags,totallike,totaldislike, userId:addedBy });
   
       // Save the new quote to the database
       await newQuote.save();
