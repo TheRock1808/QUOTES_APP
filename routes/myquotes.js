@@ -1,6 +1,7 @@
 const express = require('express');
 // const mockData = require('./mockdata'); // Path to your mock data file
 const quotesCollection = require('../models/quotes');
+const quotesReaction = require('../models/quotesreaction');
 const user = require('../models/mongo')
 const router = express.Router();
 
@@ -34,6 +35,23 @@ router.get('/users/:id/quotes', async (req, res) => {
   }
 });
 
+router.get('/users/:id/dislikedquotes', async (req, res) => {
+  try {
+    const id = req.params.id;
+    
+    const quotesReactions = await quotesReaction.find({ userId: id, disliked: true });
+
+    const quoteIds = quotesReactions.map(reaction => reaction.quoteId);
+    console.log(quoteIds);
+
+    const quotes = await quotesCollection.find({ _id: { $in: quoteIds } });
+
+    res.status(200).json(quotes);
+  } catch (err) {
+    console.error('Error fetching quotes:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // // Endpoint to fetch quotes disliked by a user
 // app.get('/users/:id/unfavouritequotes', (req, res) => {

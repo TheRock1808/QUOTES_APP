@@ -160,10 +160,13 @@ app.get('/allquote', async (req, res) => {
     try {
         const response = await axios.get('http://localhost:3000/quotes'); 
         const quotes = response.data;
+
         const response3 = await axios.get('http://localhost:3000/quotes/reactions'); 
         const quotereaction = response3.data;
+
         const response4 = await axios.get('http://localhost:3000/auth/allusers'); 
         const allusers  = response4.data;
+
         const response2 = await axios.get('http://localhost:3000/likedislikecount'); 
         const likedislikecount = response2.data.reduce((acc, item) => {
             acc[item._id] = item;
@@ -210,11 +213,11 @@ app.get('/authors/:letter', async (req, res) => {
     }
   });
 
-  app.get('/myquote', (req, res)=>{
-    const userId = req.session.user.id;
-    // console.log(userId);
-    res.render('myquotes', {_id: userId});
-  })
+  app.get('/myquote', async (req, res) => {
+    const user = req.session.user;
+    res.render('myquote', { user });
+  });  
+
 
 
 
