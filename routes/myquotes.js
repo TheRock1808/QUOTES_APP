@@ -27,7 +27,7 @@ const router = express.Router();
 router.get('/users/:id/quotes', async (req, res) => {
   try {
     const id = req.params.id;
-    const quotes = await quotesCollection.find({ addedBy: id });
+    const quotes = await quotesCollection.find({ userId: id });
     res.status(200).json(quotes);
   } catch (err) {
     console.error('Error fetching quotes:', err);
