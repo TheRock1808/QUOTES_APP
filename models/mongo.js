@@ -31,8 +31,6 @@ const userlogin = mongoose.Schema({
     password: {
         type: String,
         required: true,
-<<<<<<< HEAD
-=======
     },
     dailyQuote : {
         type : mongoose.Schema.Types.ObjectId,
@@ -49,28 +47,6 @@ const userlogin = mongoose.Schema({
     },
 });
 
-const quotesSchema = new mongoose.Schema({
-    _id: {
-        type: String,
-        default: uuidv4,
-        required:true
-      },
-    quote: {
-        type: String,
-        required: true
-    },
-    author: {
-        type: String,
-        required: true
-    },
-    tags: {
-        type: String,
-        default: '',
-        required: true,
-        
->>>>>>> quotes
-    }
-});
 
 const users = mongoose.model('users', userlogin);
 module.exports = users;

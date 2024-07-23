@@ -1,17 +1,12 @@
 const express = require('express');
-// const session = require('express-session');
 const router = express.Router();
 const quotesCollection = require('../models/quotes.js');
 const quotesreaction = require('../models/quotesreaction.js');
 const { v4: uuidv4 } = require('uuid');
 
-<<<<<<< HEAD
-router.get('/reactions', async (req, res) => {
-=======
-const { quoteRateLimiter } = require('../ratelimiter.js');
+const { checkLoginLimit } = require('../ratelimiter.js');
 
-router.get('/:id/reactions', async (req, res) => {
->>>>>>> quotes
+router.get('/reactions', async (req, res) => {
   try {
     const reactions = await quotesreaction.find({}); // Fetch all reactions
 
@@ -27,10 +22,6 @@ router.get('/:id/reactions', async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> quotes
 //1
 router.get('/', async (req, res) => {     //quotes get
   const { quote, author } = req.query;

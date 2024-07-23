@@ -51,7 +51,6 @@ const homeRouter = require('./routes/home');
 const myquotesRouter = require('./routes/myquotes.js');
 
 app.use('/home', homeRouter);
-app.use('/auth', auth);
 app.use('/quotes', quotesRouter);
 app.use('/myquotes', myquotesRouter);
 app.use('/auth', auth);
