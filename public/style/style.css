@@ -670,6 +670,10 @@ video {
 .max-h-60 {
   max-height: 15rem;
 }
+.max-h-fit {
+  max-height: -moz-fit-content;
+  max-height: fit-content;
+}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -962,6 +966,9 @@ video {
 }
 .pb-5 {
   padding-bottom: 1.25rem;
+}
+.pb-6 {
+  padding-bottom: 1.5rem;
 }
 .pl-12 {
   padding-left: 3rem;
