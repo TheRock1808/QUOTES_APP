@@ -1,6 +1,5 @@
 const users = require('../../models/mongo');
 const bcrypt = require('bcrypt');
-const session = require('express-session');
 
 async function handleUserSignin(req, res) {
     if (req.session.user) {
@@ -18,6 +17,7 @@ async function handleUserSignin(req, res) {
                 };
                 console.log('User found');
                 // res.redirect('/dashboard');
+                // console.log(req.session.user.id)
                 res.status(201).set('HX-Redirect', '/dashboard').json(user);
             } else {
                 console.log('User not found');

@@ -38,7 +38,7 @@
     <div id="quotes-section" class="space-y-4">
       <% quotes.forEach(quote => { %>
         <div class="quote-item" data-author="<%= quote.author %>" data-text="<%= quote.text %>" data-tags="<%= quote.tags %>">
-          <%- include('partials/quote', { quote, likedislikecount:likedislikecount, quotereaction ,allusers }) %>
+          <%- include('partials/quote', { quote: quote, likedislikecount: likedislikecount, quotereaction: quotereaction, allusers: allusers, currentPage: currentPage }) %>
         </div>
       <% }); %>
       <p id="no-results" style="display: none;">No results found.</p>
@@ -47,6 +47,7 @@
 </div>
 
   <% if (user) { %>
+    <% if (currentPage == '/dashboard') { %>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const filterType = document.getElementById('filterType');
@@ -98,5 +99,6 @@
       filterType.addEventListener('change', filterQuotes);
     });
   </script>
+    <% } %>
     <% } %>
 </div>

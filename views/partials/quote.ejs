@@ -90,6 +90,7 @@
   <% } %>
 </div>
 <% if (user) { %>
+  <% if (currentPage == '/dashboard') { %>
 <script>
   document.addEventListener('htmx:afterOnLoad', function (event) {
     try {
@@ -113,8 +114,10 @@
         }
       }
     } catch (e) {
-      console.error("Error parsing JSON response: ", e);
+      console.error("Error parsing JSON respons e: ", e);
     }
   });
+  
 </script>
+<% } %>
 <% } %>
