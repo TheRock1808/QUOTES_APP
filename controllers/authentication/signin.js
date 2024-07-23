@@ -28,7 +28,6 @@ async function handleUserSignin(req, res) {
                       loginCount: user.loginCount
                     });
             
-            //   else{
                 }
               }
              else {
