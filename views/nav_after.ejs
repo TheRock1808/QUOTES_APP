@@ -19,9 +19,7 @@
           Authors
         </button>
         <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 " 
-        hx-get="/allquote"
-          hx-target="#body"
-          hx-swap="innerHTML">
+        id="loadQuotesButton">
           Quotes
         </button>
         <button class="p-3 focus:bg-slate-200 px-2 rounded-xl py-1 "
@@ -98,4 +96,8 @@
       dropdown.classList.add("hidden");
     }
   });
+  document.getElementById('loadQuotesButton').addEventListener('click', function() {
+    window.location.href = '/dashboard';
+});
+
 </script>

@@ -12,9 +12,7 @@ const Quote = require('./models/quotes.js');
 const rateLimit = require('express-rate-limit');
 const app = express();
 const port = 3000;
-require('./cronJobs.js');
-const cronRoutes = require('./routes/cronRoutes.js');
-
+const cron = require('./cronJobs');
 
 mongoose.connect('mongodb://127.0.0.1:27017/quotesapp', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -42,23 +40,21 @@ const sessionChecker = (req, res, next) => {
     }
 };
 
-app.use('/cron', cronRoutes);
+// app.use('/cron', cronRoutes);
 
 // Routes
 const auth = require('./routes/auth');
 const quotesRouter = require('./routes/quotes');
 const homeRouter = require('./routes/home');
 const myquotesRouter = require('./routes/myquotes.js');
+const {checkLoginLimit} = require('./ratelimiter.js');
 
+app.use('/quotes',quotesRouter);
 app.use('/home', homeRouter);
-app.use('/quotes', quotesRouter);
 app.use('/myquotes', myquotesRouter);
 app.use('/auth', auth);
 
-// const {checkLoginLimit} = require('./ratelimiter.js');
-// app.use('/quotes', checkLoginLimit, quotesRouter);
-
-app.get('/', async (req, res) => {
+app.get('/',checkLoginLimit, async (req, res) => {
     try {
         const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
         const quotes = response.data;
@@ -84,7 +80,7 @@ app.get('/signIn', sessionChecker, (req, res) => {
 app.get('/cancel', async (req, res) => {
     const response = await axios.get('http://localhost:3000/quotes'); // Fetch quotes using the quotes router
     const quotes = response.data;
-    res.render('allquote', { quotes , user:"", likedislikecount:"", quotereaction:"", allusers:""});
+    res.render('allquote', { quotes , user:"", likedislikecount:"", quotereaction:"", allusers:"",currentPage:""});
 });
 
 app.get('/update', (req, res) => {
@@ -125,7 +121,6 @@ app.get('/dashboard', async (req, res) => {
     }
     
 });
-
 app.get('/likedislikecount',async (req, res) => {
     try {
         // Aggregate reactions to count likes and dislikes per quote
@@ -251,9 +246,9 @@ app.get('/editQuoteForm/:id', async (req, res) => {
     }
 });
 
-app.get('/limit-exceeded' , (req , res) => {
-res.render('limitExceeded');
-});
+  app.get('/limitexceeded' , (req , res) => {
+    res.render('limitExceeded');
+  });
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);

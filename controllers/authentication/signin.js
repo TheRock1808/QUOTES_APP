@@ -11,7 +11,7 @@ async function handleUserSignin(req, res) {
 
             if (user && await bcrypt.compare(password, user.password)) {
               user.loginCount += 1;
-              if(user.loginCount <= 10)
+              if(user.loginCount <= 10) //rate limit for authenticated user
               {
                   await user.save();
     
@@ -22,13 +22,15 @@ async function handleUserSignin(req, res) {
                         loginCount: user.loginCount
                     };
                     console.log('User found');
-                    // return res.status(201).set('HX-Redirect', '/dashboard').json(user);
-                    // res.redirect('/dashboard');
                     res.status(201).set('HX-Redirect', '/dashboard').json({ message: 'User signed in successfully' ,
                       loginCount: user.loginCount
                     });
             
                 }
+                else{
+                    res.redirect('/limitexceeded')
+                }
+            
               }
              else {
                 console.log('User not found');
