@@ -50,9 +50,8 @@ router.post('/', async (req, res) => {     //quotes post
     const totaldislike = 0;
     const addedBy = req.session.user.id;
     try {
-      const newQuote = new quotesCollection({ quote, author, tags,totallike,totaldislike, userId:addedBy });
+      const newQuote = new quotesCollection({ quote, author, tags, totallike, totaldislike, userId : addedBy });
   
-      // Save the new quote to the database
       await newQuote.save();
   
       res.status(201).set('HX-Redirect', '/dashboard').json(newQuote); // Created
