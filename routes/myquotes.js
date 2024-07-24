@@ -60,7 +60,7 @@ router.delete('/quote/:id/delete', async (req, res) => {
 
       if (result.deletedCount === 1) {
           console.log('quote got deleted');
-          res.status(200).set('HX-Redirect', '/myquote').send();
+          res.status(200).set('HX-Redirect', '/dashboard?redirect=myquote').send();
       } else {
           res.status(404).send('Quote not found');
       }
@@ -80,7 +80,8 @@ router.patch('/quote/:id/edit', async (req, res) => {
         { $set: { quote: quote, author: author } },
         { returnOriginal: false } // Ensures the updated document is returned
     );
-    res.status(201).set('HX-Redirect', '/myquote').send(updatedQuote);
+    res.status(201).set('HX-Redirect', '/dashboard?redirect=myquote').send(updatedQuote);
+    // res.render('myquote');
   } catch (e) {
       console.log('Error has occurred', e);
       res.status(500).send('Internal Server Error');

@@ -223,7 +223,10 @@ app.get('/myquote', async (req, res) => {
     const user = req.session.user;
     res.render('myquote', { user });
   });  
-
+// app.get('/allmyquote', async (req, res) => {
+//     const user = req.session.user;
+//     res.render('myquotes', { user });
+//   }); 
 app.get('/deleteQuote/:id', (req, res) => {
     const quoteId = req.params.id;
     console.log(quoteId);
