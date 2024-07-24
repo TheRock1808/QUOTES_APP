@@ -16,6 +16,7 @@
     <!-- Like / Dislike Buttons and Lists -->
     <div class="flex space-x-2 relative">
       <!-- Like Button -->
+      <% if (quote.userId !== user.id) { %>
       <div class="relative group">
         <button class="like-btn" 
           hx-patch="/quotes/<%= quote._id %>/like/toggle" 
@@ -30,6 +31,7 @@
             <%= (likedislikecount[quote._id] && likedislikecount[quote._id].likeCount) || 0 %>
           </span>
         </button>
+        <% } %>
        <!-- List of users who liked -->
 <div class="absolute bg-white border border-gray-300 p-4 rounded-lg shadow-lg left-0 top-full hidden group-hover:block z-10 w-72 max-h-60 overflow-auto transition-all duration-300 ease-in-out">
   <h4 class="font-semibold text-lg mb-2 text-gray-800">People who reacted</h4>
@@ -49,6 +51,7 @@
 
       <!-- Dislike Button -->
       <div class="relative group">
+        <% if (quote.userId !== user.id) { %>
         <button class="dislike-btn" 
           hx-patch="/quotes/<%= quote._id %>/dislike/toggle" 
           hx-target="#quote-<%= quote._id %>-dislike" 
@@ -62,6 +65,7 @@
             <%= (likedislikecount[quote._id] && likedislikecount[quote._id].dislikeCount) || 0 %>
           </span>
         </button>
+        <% } %>
         <!-- List of users who disliked -->
         <div class="absolute bg-white border border-gray-300 p-4 rounded-lg shadow-lg left-0 top-full hidden group-hover:block z-10 w-72 max-h-60 overflow-auto transition-all duration-300 ease-in-out">
           <h4 class="font-semibold text-lg mb-2 text-gray-800">People who reacted</h4>
@@ -77,18 +81,31 @@
           </ul>
         </div>
       </div>
+        <!-- Tags Section -->
+    <% if (quote.userId && quote.userId === user.id) { %>
+      <% if (quote.tags && quote.tags.length > 0) { %>
+        <div class="flex flex-wrap space-x-2 mt-2">
+          <% quote.tags.split(';').forEach((tag) => { %>
+            <div class="bg-slate-300 w-fit h-fit text-black p-1 rounded-md"><%= tag.trim() %></div>
+          <% }); %>
+        </div>
+      <% } %>
     </div>
-  <% } %>
-
-  <!-- Tags Section -->
-  <% if (quote.tags && quote.tags.length > 0) { %>
-    <div class="flex flex-wrap space-x-2 mt-2">
-      <% quote.tags.split(';').forEach((tag) => { %>
-        <div class="bg-slate-300 w-fit h-fit text-black p-1 rounded-md"><%= tag.trim() %></div>
-      <% }); %>
+    <% } %>
     </div>
+    <!-- Tags Section -->
+    <% if (quote.userId !== user.id) { %>
+    <% if (quote.tags && quote.tags.length > 0) { %>
+      <div class="flex flex-wrap space-x-2 mt-2">
+        <% quote.tags.split(';').forEach((tag) => { %>
+          <div class="bg-slate-300 w-fit h-fit text-black p-1 rounded-md"><%= tag.trim() %></div>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
   <% } %>
-</div>
+  <% } %>
+  
 <% if (user) { %>
   <% if (currentPage == '/dashboard') { %>
 <script>
