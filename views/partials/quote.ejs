@@ -7,9 +7,9 @@
 
   <% if (user) { %>
     <!-- User Icon if added by current user -->
-    <% if (quote.addedBy && quote.addedBy === user.id) { %>
+    <% if (quote.userId && quote.userId === user.id) { %>
       <div class="absolute top-0 right-0">
-        <img src="../../public/img/user_icon.png" alt="User Icon" class="h-10 w-16">
+        <img src="/img/user_icon.png" alt="User Icon" class="h-10 w-16">
       </div>
     <% } %>
 

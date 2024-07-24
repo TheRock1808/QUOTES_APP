@@ -26,7 +26,7 @@
       padding: 16px;
       position: relative;
       background-color: #ffffff;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
       margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
@@ -74,7 +74,7 @@
 <body>
   <div class="container mx-auto flex flex-col items-center justify-center bg-gray-100">
     <div class="flex items-center mb-4">
-      <h1 class="text-2xl font-bold mb-8 mt-6">My Quotes</h1>
+      <!-- <h1 class="text-2xl font-bold mb-8 mt-6">My Quotes</h1> -->
       <div class="flex-grow border-t border-gray-200 ml-4"></div>
     </div>
     <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-5xl">
@@ -83,22 +83,28 @@
           onclick="setActiveTab('added-quotes-tab'); fetchAllQuotes('<%= user.id %>')">
           Added Quotes
         </a>
-        <a id="liked-quotes-tab" class="tab btn tab-border px-4 py-2 m-auto hover:text-purple-700 cursor-pointer"
-          onclick="setActiveTab('liked-quotes-tab'); fetchLikedQuotes('<%= user.id %>')">
+      <!-- </div> -->
+      <!-- <div id="body" class="container mx-auto p-4 h-[calc(100vh-4rem)] overflow-y-auto"> -->
+        <a id="liked-quotes-tab" class="tab tab-border px-4 py-2" href="#" onclick="fetchLikedQuotes('<%= user.id %>')">
           Liked Quotes
         </a>
-        <a id="disliked-quotes-tab" class="tab btn tab-border px-4 py-2 m-auto hover:text-purple-700 cursor-pointer"
-          onclick="setActiveTab('disliked-quotes-tab'); fetchDislikedQuotes('<%= user.id %>')">
+      <!-- </div> -->
+      <!-- <div id="body class="container mx-auto p-4 h-[calc(100vh-4rem)] overflow-y-auto"> -->
+        <a id="disliked-quotes-tab" class="tab tab-border px-4 py-2" href="#" onclick="fetchDislikedQuotes('<%= user.id %>')">
           Disliked Quotes
         </a>
       </div>
-
-      <div id="quote-list" class="mt-4">
-        <!-- Quotes will be dynamically loaded here -->
+      
+      <div class="container mx-auto p-4 h-[calc(100vh-4rem)] overflow-y-auto ">
+        <div id="quote-list" class="mt-4 container mx-auto p-4 ">
+          <!-- Quotes will be dynamically loaded here -->
+        </div>
+        <div class="m-32"></div>
       </div>
     </div>
   </div>
   <script>
+    
     function fetchAllQuotes(userId) {
       fetch(`/myquotes/users/${userId}/quotes`)
         .then((response) => response.json())
@@ -115,7 +121,7 @@
               const quoteElement = document.createElement("div");
               quoteElement.classList.add("quote-container");
               quoteElement.innerHTML = `
-                <div class="border-2 border-gray-600 mt-3 rounded-md p-4 relative bg-white shadow-md">
+                <div class="border-2 border-yellow-600 mt-3 rounded-md p-4 relative bg-white shadow-md">
                     <p class="mb-4 text-gray-800">${quote.quote}</p>
                   <div class="absolute bottom-2 right-3 bg-blue-600 text-white px-2 py-1 rounded-md">
                     - ${quote.author}
