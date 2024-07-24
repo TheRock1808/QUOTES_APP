@@ -5,24 +5,6 @@ const quotesReaction = require('../models/quotesreaction');
 const user = require('../models/mongo')
 const router = express.Router();
 
-// // Endpoint to fetch users who liked a quote
-// app.get('/quotes/:id/like/users', (req, res) => {
-//   const { id } = req.params;
-//   const users = mockData.likes
-//     .filter(like => like.quoteId == id)
-//     .map(like => mockData.users.find(user => user.id == like.userId));
-//   res.json(users);
-// });
-
-// Endpoint to fetch users who disliked a quote
-// app.get('/quotes/:id/dislike/users', (req, res) => {
-//   const { id } = req.params;
-//   const users = mockData.dislikes
-//     .filter(dislike => dislike.quoteId == id)
-//     .map(dislike => mockData.users.find(user => user.id == dislike.userId));
-//   res.json(users);
-// });
-
 // Endpoint to fetch quotes added by a user
 router.get('/users/:id/quotes', async (req, res) => {
   try {
@@ -35,7 +17,7 @@ router.get('/users/:id/quotes', async (req, res) => {
   }
 });
 
-router.get('/users/:id/dislikedquotes', async (req, res) => {
+router.get('/users/:id/unfavourite-quotes', async (req, res) => {
   try {
     const id = req.params.id;
     // console.log(id)
@@ -53,7 +35,7 @@ router.get('/users/:id/dislikedquotes', async (req, res) => {
   }
 });
 
-router.get('/users/:id/likedquotes', async (req, res) => {
+router.get('/users/:id/favourite-quotes', async (req, res) => {
   try {
     const id = req.params.id;
     const quotesReactions = await quotesReaction.find({ userId: id, like: true });
@@ -66,6 +48,42 @@ router.get('/users/:id/likedquotes', async (req, res) => {
   } catch (err) {
     console.error('Error fetching quotes:', err);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+router.delete('/quote/:id/delete', async (req, res) => {
+  try {
+      const id = req.params.id;
+      console.log('quote id: ', id);
+
+      const result = await quotesCollection.deleteOne({ _id: id });
+
+      if (result.deletedCount === 1) {
+          console.log('quote got deleted');
+          res.status(200).set('HX-Redirect', '/myquote').send();
+      } else {
+          res.status(404).send('Quote not found');
+      }
+  } catch (e) {
+      console.log('Error has occurred', e);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
+router.patch('/quote/:id/edit', async (req, res) => {
+  try {
+    const id = req.params.id; // Use the string ID directly
+    const { quote, author } = req.body;
+
+    const updatedQuote = await quotesCollection.findOneAndUpdate(
+        { _id: id }, // Use the string ID
+        { $set: { quote: quote, author: author } },
+        { returnOriginal: false } // Ensures the updated document is returned
+    );
+    res.status(201).set('HX-Redirect', '/myquote').send(updatedQuote);
+  } catch (e) {
+      console.log('Error has occurred', e);
+      res.status(500).send('Internal Server Error');
   }
 });
 

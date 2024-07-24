@@ -1,31 +1,30 @@
-
-   <body>
-     <div class="flex  items-center h-screen ">
-       <div class="mx-auto border-2 border-slate-700  p-7 w-fit items-center rounded-md">
-         <svg
-           class="h-24 w-24 text-yellow-500 items-center mx-auto"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2"
-           stroke-linecap="round"
-           stroke-linejoin="round"
-         >
-           {" "}
-           <circle cx="12" cy="12" r="10" />{" "}
-           <line x1="12" y1="8" x2="12" y2="12" />{" "}
-           <line x1="12" y1="16" x2="12.01" y2="16" />
-         </svg>
-         <h1 class="text-center text-3xl font-extrabold pt-4 ">Are you sure?</h1>
-         <p class="text-center text-lg pt-3">You will not be able to recover this record!!</p>
-         <div class="flex justify-center pt-5 space-x-2">
-           <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">
-             Yes , Delete it !
-           </button>
-           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            No , Keep it !
-           </button>
-         </div>
-       </div>
-     </div>
-   </body>
+<body>
+  <div class="flex items-center h-screen">
+    <div class="mx-auto border-2 border-slate-700 p-7 w-fit items-center rounded-md">
+      <svg class="h-24 w-24 text-yellow-500 items-center mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        {" "}
+        <circle cx="12" cy="12" r="10" />
+        {" "}
+        <line x1="12" y1="8" x2="12" y2="12" />
+        {" "}
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      <form hx-delete="/myquotes/quote/<%= quoteId %>/delete" hx-swap="none">
+        <h1 class="text-center text-3xl font-extrabold pt-4">Are you sure?</h1>
+        <p class="text-center text-lg pt-3">
+          You will not be able to recover this record!!
+        </p>
+        <div class="flex justify-center pt-5 space-x-2">
+          <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">
+            Yes, Delete it!
+          </button>
+          <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onclick="window.location.href='/myquote'">
+            No, Keep it!
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>

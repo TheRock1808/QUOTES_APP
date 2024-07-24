@@ -229,11 +229,31 @@ app.get('/myquote', async (req, res) => {
     res.render('myquote', { user });
   });  
 
+app.get('/deleteQuote/:id', (req, res) => {
+    const quoteId = req.params.id;
+    console.log(quoteId);
+    res.render('deleteQuote', { quoteId });
+});
 
+app.get('/editQuoteForm/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const quote = await quotesCollection.findOne({ _id: id });
 
-  app.get('/limit-exceeded' , (req , res) => {
-    res.render('limitExceeded');
-  });
+        if (quote) {
+            res.render('editQuoteForm', { quote });
+        } else {
+            res.status(404).send('Quote not found');
+        }
+    } catch (e) {
+        console.log('Error has occurred', e);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/limit-exceeded' , (req , res) => {
+res.render('limitExceeded');
+});
 
 app.listen(port, () => {
     console.log(`Listening to http://localhost:${port}`);
