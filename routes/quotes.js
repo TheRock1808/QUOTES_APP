@@ -289,19 +289,14 @@ router.patch('/:id/dislike/toggle', async (req, res) => {
 });
 
 
-router.use((req, res, next) => {
-  // Apply rate limiter check here if necessary
-  next();
-});
-
-router.get('/', async (req, res) => {
-  // Check if user has crossed the rate limit
-  // This depends on how you track the limit, adjust as needed
-  if (req.rateLimit && req.rateLimit.remaining === 0) {
-      res.render('ratelimit');
-  } else {
-      // Normal quotes page rendering
-      // Add your code to fetch and display quotes here
-  }
-});
+// router.get('/', async (req, res) => {
+//   // Check if user has crossed the rate limit
+//   // This depends on how you track the limit, adjust as needed
+//   if (req.rateLimit && req.rateLimit.remaining === 0) {
+//       res.render('ratelimit');
+//   } else {
+//       // Normal quotes page rendering
+//       // Add your code to fetch and display quotes here
+//   }
+// });
 module.exports = router;

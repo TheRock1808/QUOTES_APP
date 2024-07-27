@@ -2,10 +2,12 @@ const quotesCollection = require('../models/quotes');
 const quotesReactionCollection = require('../models/quotesreaction');
 const DailyQuote = require('../models/dailyquote'); 
 
-// const getRandomQuote = (quotes) => {
-//     if (quotes.length === 0) return null;
-//     return quotes[Math.floor(Math.random() * quotes.length)];
-// };
+const getRandomQuote = async () => {
+    const count = await quotesCollection.countDocuments();
+    const random = Math.floor(Math.random() * count);
+    const randomQuote = await quotesCollection.findOne().skip(random);
+    return randomQuote;
+};
 
 const getDailyQuote = async (userId) => {
     const today = new Date().setHours(0, 0, 0, 0); 
@@ -34,6 +36,10 @@ const getDailyQuote = async (userId) => {
             dailyQuote = await quotesCollection.findOne({ _id: { $in: filteredLikedQuotes } });
         }
 
+        if (!dailyQuote) {
+            dailyQuote = await getRandomQuote();
+        }
+        
         if (dailyQuote) {
             await DailyQuote.findOneAndUpdate(
                 { userId, timestamp: { $gte: today } },
